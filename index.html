@@ -20,25 +20,24 @@ canvas {
   z-index: 1;
 }
 
-/* Contenedor de fotos con movimiento */
+/* Contenedor de fotos FIJO, visible siempre */
 .side {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
   z-index: 10;
-  animation: mover 25s linear infinite;
 }
 
-.left { left: 5%; }
-.right { right: 5%; }
+.left { left: 4%; }
+.right { right: 4%; }
 
 /* Fotos más pequeñas */
 .photo {
-  width: 70px;
-  height: 70px;
+  width: 60px;
+  height: 60px;
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
@@ -58,29 +57,23 @@ canvas {
   to { transform: rotateY(360deg); }
 }
 
-/* Animación para que las fotos recorran toda la pantalla */
-@keyframes mover {
-  0%   { transform: translateY(-200vh); }
-  100% { transform: translateY(200vh); }
-}
-
 .heart {
   position: absolute;
   color: #ff99cc;
-  font-size: 18px;
+  font-size: 16px;
   z-index: 5;
   animation: floatUp 6s linear forwards;
 }
 
 @keyframes floatUp {
   from { transform: translateY(100vh) scale(0.8); opacity: 1; }
-  to { transform: translateY(-20vh) scale(1.2); opacity: 0; }
+  to { transform: translateY(-20vh) scale(1.1); opacity: 0; }
 }
 
 .text {
   position: absolute;
   color: #ffffff;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   opacity: 0.9;
   z-index: 5;
@@ -124,18 +117,18 @@ for (let i = 0; i < 600; i++) {
   stars.push({
     x: Math.random() * canvas.width,
     y: Math.random() * canvas.height,
-    r: Math.random() * 1.2
+    r: Math.random() * 1.1
   });
 }
 
-/* ✨ TEXTO "TE AMO SANDRA" MÁS PEQUEÑO Y CENTRADO */
+/* ✨ TEXTO MUCHO MÁS PEQUEÑO, COMPLETO */
 let textStars = [];
 function createTextStars() {
   textStars = [];
   const tempCanvas = document.createElement("canvas");
   const tempCtx = tempCanvas.getContext("2d");
-  const size = 90; // Tamaño reducido para celular
-  tempCanvas.width = size * 5;
+  const size = 65; // Tamaño reducido al máximo para que entre completo
+  tempCanvas.width = size * 6; // Ancho suficiente para no cortar
   tempCanvas.height = size;
 
   tempCtx.fillStyle = "white";
@@ -156,7 +149,7 @@ function createTextStars() {
         textStars.push({
           x: centerX - (tempCanvas.width / 2) + x,
           y: centerY - (tempCanvas.height / 2) + y,
-          r: Math.random() * 0.7 + 0.15
+          r: Math.random() * 0.6 + 0.15
         });
       }
     }
@@ -213,7 +206,7 @@ function textFloat() {
   const t = document.createElement("div");
   t.className = "text";
   t.innerText = frases[Math.floor(Math.random() * frases.length)];
-  t.style.left = Math.random() * (window.innerWidth - 150) + "px";
+  t.style.left = Math.random() * (window.innerWidth - 140) + "px";
   t.style.bottom = "0px";
   document.body.appendChild(t);
   setTimeout(() => t.remove(), 10000);
