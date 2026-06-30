@@ -9,7 +9,7 @@
 body {
   margin: 0;
   overflow: hidden;
-  background: black;
+  background: #000000;
   font-family: Arial, sans-serif;
 }
 
@@ -20,7 +20,7 @@ canvas {
   z-index: 1;
 }
 
-/* Contenedor de fotos FIJO, visible siempre */
+/* Contenedor de fotos FIJO */
 .side {
   position: absolute;
   top: 50%;
@@ -31,13 +31,13 @@ canvas {
   z-index: 10;
 }
 
-.left { left: 4%; }
-.right { right: 4%; }
+.left { left: 3%; }
+.right { right: 3%; }
 
 /* Fotos más pequeñas */
 .photo {
-  width: 60px;
-  height: 60px;
+  width: 55px;
+  height: 55px;
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
@@ -111,24 +111,24 @@ function resizeCanvas() {
 resizeCanvas();
 window.addEventListener("resize", resizeCanvas);
 
-/* ⭐ ESTRELLAS DEL FONDO */
+/* ⭐ ESTRELLAS DE FONDO */
 let stars = [];
 for (let i = 0; i < 600; i++) {
   stars.push({
     x: Math.random() * canvas.width,
     y: Math.random() * canvas.height,
-    r: Math.random() * 1.1
+    r: Math.random() * 1
   });
 }
 
-/* ✨ TEXTO MUCHO MÁS PEQUEÑO, COMPLETO */
+/* ✨ TEXTO "TE AMO SANDRA" - AHORA MÁS COMPACTO Y CENTRADO */
 let textStars = [];
 function createTextStars() {
   textStars = [];
   const tempCanvas = document.createElement("canvas");
   const tempCtx = tempCanvas.getContext("2d");
-  const size = 65; // Tamaño reducido al máximo para que entre completo
-  tempCanvas.width = size * 6; // Ancho suficiente para no cortar
+  const size = 55; // Tamaño más reducido para que entre en cualquier celular
+  tempCanvas.width = size * 5.5; // Ancho justo para que no sobre ni falte
   tempCanvas.height = size;
 
   tempCtx.fillStyle = "white";
@@ -142,14 +142,15 @@ function createTextStars() {
   const centerX = canvas.width / 2;
   const centerY = canvas.height / 2;
 
-  for (let y = 0; y < tempCanvas.height; y += 3) {
-    for (let x = 0; x < tempCanvas.width; x += 3) {
+  // Espaciado más cerrado para que se vea completo
+  for (let y = 0; y < tempCanvas.height; y += 2.5) {
+    for (let x = 0; x < tempCanvas.width; x += 2.5) {
       const idx = (y * tempCanvas.width + x) * 4;
       if (data[idx + 3] > 128) {
         textStars.push({
           x: centerX - (tempCanvas.width / 2) + x,
           y: centerY - (tempCanvas.height / 2) + y,
-          r: Math.random() * 0.6 + 0.15
+          r: Math.random() * 0.5 + 0.2
         });
       }
     }
@@ -162,7 +163,7 @@ window.addEventListener("resize", createTextStars);
 function drawStars() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Estrellas blancas de fondo
+  // Fondo de estrellas blancas
   ctx.fillStyle = "white";
   for (let s of stars) {
     ctx.beginPath();
@@ -172,7 +173,7 @@ function drawStars() {
     if (s.y > canvas.height) s.y = 0;
   }
 
-  // Estrellas rojas del texto
+  // Texto en estrellas ROJAS
   ctx.fillStyle = "#ff2244";
   for (let ts of textStars) {
     ctx.beginPath();
