@@ -2,28 +2,51 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Galaxia Pro</title>
+<title>Universo Sandra</title>
 
 <style>
 body {
   margin: 0;
   overflow: hidden;
-  background: black;
+  background: radial-gradient(circle, #000010, black);
+  font-family: Arial, sans-serif;
 }
 
+/* canvas estrellas + texto */
 canvas {
   position: absolute;
   top: 0;
   left: 0;
 }
 
-.photo {
+/* fotos izquierda */
+.left {
   position: absolute;
-  width: 110px;
-  height: 110px;
-  border-radius: 15px;
+  left: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* fotos derecha */
+.right {
+  position: absolute;
+  right: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.photo {
+  width: 130px;
+  height: 130px;
+  border-radius: 18px;
   overflow: hidden;
-  box-shadow: 0 0 20px white;
+  box-shadow: 0 0 15px white;
 }
 
 .photo img {
@@ -31,46 +54,104 @@ canvas {
   height: 100%;
   object-fit: cover;
 }
+
+/* corazones */
+.heart {
+  position: absolute;
+  color: pink;
+  font-size: 18px;
+  animation: floatUp 6s linear infinite;
+}
+
+@keyframes floatUp {
+  from { transform: translateY(100vh); opacity: 1; }
+  to { transform: translateY(-20vh); opacity: 0; }
+}
+
+/* frases */
+.textFloat {
+  position: absolute;
+  color: white;
+  font-size: 16px;
+  animation: floatUp 10s linear infinite;
+  opacity: 0.8;
+}
 </style>
 </head>
 
 <body>
 
-<canvas id="c"></canvas>
+<canvas id="canvas"></canvas>
 
-<!-- fotos -->
-<div class="photo" style="left:50%; top:50%; transform: translate(-50%,-50%) rotateY(0deg) translateZ(300px);">
-  <img src="san 3.jpeg">
+<!-- fotos izquierda -->
+<div class="left">
+  <div class="photo"><img src="san 3.jpeg"></div>
+  <div class="photo"><img src="san1.jpeg"></div>
+  <div class="photo"><img src="san 2.jpeg"></div>
 </div>
 
-<div class="photo" style="left:50%; top:50%; transform: translate(-50%,-50%) rotateY(72deg) translateZ(300px);">
-  <img src="sam 5.jpeg">
-</div>
-
-<div class="photo" style="left:50%; top:50%; transform: translate(-50%,-50%) rotateY(144deg) translateZ(300px);">
-  <img src="san1.jpeg">
-</div>
-
-<div class="photo" style="left:50%; top:50%; transform: translate(-50%,-50%) rotateY(216deg) translateZ(300px);">
-  <img src="san 2.jpeg">
-</div>
-
-<div class="photo" style="left:50%; top:50%; transform: translate(-50%,-50%) rotateY(288deg) translateZ(300px);">
-  <img src="san6.jpeg">
+<!-- fotos derecha -->
+<div class="right">
+  <div class="photo"><img src="sam 5.jpeg"></div>
+  <div class="photo"><img src="san6.jpeg"></div>
 </div>
 
 <script>
-const canvas = document.getElementById("c");
+const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
 canvas.width = innerWidth;
 canvas.height = innerHeight;
 
-// puntos del texto
+/* ⭐ ESTRELLAS FONDO */
+let stars = [];
+for (let i = 0; i < 600; i++) {
+  stars.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 1.8
+  });
+}
+
+/* 💖 CORAZONES */
+function createHeart() {
+  let h = document.createElement("div");
+  h.className = "heart";
+  h.innerHTML = "❤";
+  h.style.left = Math.random() * window.innerWidth + "px";
+  h.style.fontSize = (10 + Math.random()*20) + "px";
+  document.body.appendChild(h);
+
+  setTimeout(() => h.remove(), 6000);
+}
+setInterval(createHeart, 400);
+
+/* ✨ FRASES BONITAS */
+const frases = [
+  "Eres mi universo 💫",
+  "Te pienso siempre ❤️",
+  "Mi lugar favorito eres tú 💕",
+  "Eres magia ✨",
+  "Te amo infinito 💖"
+];
+
+function createText() {
+  let t = document.createElement("div");
+  t.className = "textFloat";
+  t.innerText = frases[Math.floor(Math.random()*frases.length)];
+  t.style.left = Math.random() * window.innerWidth + "px";
+  t.style.bottom = "0px";
+  document.body.appendChild(t);
+
+  setTimeout(() => t.remove(), 10000);
+}
+setInterval(createText, 2000);
+
+/* 🌌 TEXTO TE AMO SANDRA EN PARTICULAS */
 let points = [];
 let particles = [];
 
-function createTextPoints() {
+function makeText() {
   let off = document.createElement("canvas");
   let octx = off.getContext("2d");
 
@@ -80,7 +161,7 @@ function createTextPoints() {
   octx.fillStyle = "white";
   octx.font = "bold 90px Arial";
   octx.textAlign = "center";
-  octx.fillText("TE AMO SANDRA", canvas.width/2, canvas.height/2);
+  octx.fillText("TE AMO SANDRA", off.width/2, off.height/2);
 
   let data = octx.getImageData(0,0,off.width,off.height).data;
 
@@ -88,19 +169,17 @@ function createTextPoints() {
     for (let x = 0; x < off.width; x += 6) {
       let i = (y * off.width + x) * 4;
       if (data[i] > 200) {
-        points.push({x, y});
+        points.push({x,y});
       }
     }
   }
 }
 
-function createParticles() {
-  for (let i = 0; i < 1200; i++) {
+function makeParticles() {
+  for (let i = 0; i < 1000; i++) {
     particles.push({
       x: Math.random()*canvas.width,
-      y: Math.random()*canvas.height,
-      tx: 0,
-      ty: 0
+      y: Math.random()*canvas.height
     });
   }
 }
@@ -108,29 +187,33 @@ function createParticles() {
 function animate() {
   ctx.clearRect(0,0,canvas.width,canvas.height);
 
+  /* estrellas */
   ctx.fillStyle = "white";
+  for (let s of stars) {
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+    ctx.fill();
+  }
 
+  /* texto */
+  ctx.fillStyle = "white";
   for (let i = 0; i < particles.length; i++) {
     let p = particles[i];
+    let t = points[i % points.length];
 
-    let target = points[i % points.length];
-
-    p.tx = target.x;
-    p.ty = target.y;
-
-    p.x += (p.tx - p.x) * 0.05;
-    p.y += (p.ty - p.y) * 0.05;
+    p.x += (t.x - p.x) * 0.05;
+    p.y += (t.y - p.y) * 0.05;
 
     ctx.beginPath();
-    ctx.arc(p.x, p.y, 1.5, 0, Math.PI*2);
+    ctx.arc(p.x, p.y, 1.6, 0, Math.PI*2);
     ctx.fill();
   }
 
   requestAnimationFrame(animate);
 }
 
-createTextPoints();
-createParticles();
+makeText();
+makeParticles();
 animate();
 </script>
 
