@@ -119,14 +119,14 @@ for (let i = 0; i < 750; i++) {
   });
 }
 
-/* ✨ ESTRELLAS ROJAS QUE FORMAN EL TEXTO */
+/* ✨ ESTRELLAS ROJAS QUE FORMAN EL TEXTO (CORREGIDO ANCHO) */
 let textStars = [];
 function createTextStars() {
   textStars = [];
   const tempCanvas = document.createElement("canvas");
   const tempCtx = tempCanvas.getContext("2d");
-  const size = 160; // Tamaño reducido del texto
-  tempCanvas.width = size * 4;
+  const size = 160; // Tamaño reducido
+  tempCanvas.width = size * 5; // Más ancho para que no se corte
   tempCanvas.height = size;
 
   tempCtx.fillStyle = "white";
@@ -160,7 +160,7 @@ window.addEventListener("resize", createTextStars);
 function drawStars() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Dibujar estrellas blancas del fondo
+  // Estrellas blancas del fondo
   ctx.fillStyle = "white";
   for (let s of stars) {
     ctx.beginPath();
@@ -170,8 +170,8 @@ function drawStars() {
     if (s.y > canvas.height) s.y = 0;
   }
 
-  // Dibujar estrellas ROJAS del texto
-  ctx.fillStyle = "#ff3355"; // Color rojo para el título
+  // Estrellas rojas del texto
+  ctx.fillStyle = "#ff3355";
   for (let ts of textStars) {
     ctx.beginPath();
     ctx.arc(ts.x, ts.y, ts.r, 0, Math.PI * 2);
