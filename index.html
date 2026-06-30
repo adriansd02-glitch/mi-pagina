@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mi Página</title>
+<title>Te Amo Sandra</title>
 
 <style>
 body{
@@ -12,28 +12,55 @@ body{
     display:flex;
     justify-content:center;
     align-items:center;
-    background:#000;
+    background:linear-gradient(45deg,#ff4d6d,#ff85a1,#ffc2d1);
+    overflow:hidden;
 }
 
 h1{
     font-family:Arial, sans-serif;
     font-size:90px;
-    text-transform:uppercase;
-    animation: colores 3s infinite;
-    text-shadow:0 0 20px currentColor;
+    text-align:center;
+    color:white;
+    text-shadow:
+        0 0 10px #fff,
+        0 0 20px #ff4d6d,
+        0 0 40px #ff4d6d;
+    animation: latido 1.5s infinite;
 }
 
-@keyframes colores{
-    0%{color:#00ffff;}
-    25%{color:#00ff00;}
-    50%{color:#ffff00;}
-    75%{color:#ff00ff;}
-    100%{color:#00ffff;}
+.corazon{
+    position:absolute;
+    color:white;
+    font-size:30px;
+    animation: flotar 6s linear infinite;
+}
+
+@keyframes latido{
+    0%,100%{transform:scale(1);}
+    50%{transform:scale(1.1);}
+}
+
+@keyframes flotar{
+    0%{
+        transform:translateY(100vh);
+        opacity:1;
+    }
+    100%{
+        transform:translateY(-100px);
+        opacity:0;
+    }
 }
 </style>
 </head>
-
 <body>
-    <h1>ADRIAN</h1>
+
+<div class="corazon" style="left:10%;">❤</div>
+<div class="corazon" style="left:25%;animation-delay:1s;">❤</div>
+<div class="corazon" style="left:40%;animation-delay:2s;">❤</div>
+<div class="corazon" style="left:60%;animation-delay:3s;">❤</div>
+<div class="corazon" style="left:80%;animation-delay:4s;">❤</div>
+
+<h1>❤ TE AMO SANDRA ❤</h1>
+
 </body>
 </html>
