@@ -112,7 +112,7 @@ body {
 }
 
 /* ======================================
-   ✨ PANTALLA PRINCIPAL - IGUAL A LA IMAGEN
+   ✨ PANTALLA PRINCIPAL
 ====================================== */
 .contenido-principal {
   width: 100%;
@@ -139,7 +139,6 @@ body {
   overflow: hidden;
 }
 
-/* Nebulosa de colores */
 .nebulosa {
   position: absolute;
   width: 100%;
@@ -158,14 +157,12 @@ body {
   filter: blur(15px);
 }
 
-/* Estrellas brillantes */
 .estrella-fondo {
   position: absolute;
   border-radius: 50%;
   background: #ffffff;
 }
 
-/* Texto principal */
 .texto-centro {
   position: absolute;
   top: 50%;
@@ -173,6 +170,14 @@ body {
   transform: translate(-50%, -50%);
   text-align: center;
   z-index: 20;
+}
+
+.frase-arriba {
+  font-size: 14px;
+  color: #ffddaa;
+  margin-bottom: 15px;
+  text-shadow: 0 0 5px #ff8822;
+  opacity: 0.9;
 }
 
 .te-amo {
@@ -205,24 +210,21 @@ body {
   to { filter: brightness(1.4); }
 }
 
-/* Frase pequeña como en la imagen */
-.frase-arriba {
-  font-size: 14px;
-  color: #ffddaa;
-  margin-bottom: 15px;
-  text-shadow: 0 0 5px #ff8822;
-  opacity: 0.9;
-}
-
-/* Fotos moviéndose */
+/* ✅ FOTOS MÁS GRANDES */
 .foto {
   position: absolute;
-  width: 42px;
-  height: 42px;
+  width: 65px;
+  height: 65px;
   border-radius: 50%;
   overflow: hidden;
   box-shadow: 0 0 12px #ffaa33, 0 0 24px rgba(255,170,51,0.5);
   z-index: 10;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.foto:hover {
+  transform: scale(1.08);
 }
 
 .foto img {
@@ -232,21 +234,75 @@ body {
   display: block;
 }
 
-/* Frases que suben */
-.frase {
+/* ✅ FRASES CON CORAZONES Y MOVIMIENTO */
+.frase-flotante {
   position: absolute;
   color: #ffffff;
-  font-size: 12px;
-  text-shadow: 0 0 5px #ffaa33;
-  animation: subir 8s linear forwards;
-  z-index: 5;
+  font-size: 13px;
+  font-weight: 500;
+  text-shadow: 0 0 6px #ffaa33, 0 0 12px rgba(255, 170, 51, 0.6);
+  white-space: nowrap;
+  z-index: 8;
+  opacity: 0.9;
+  user-select: none;
 }
 
-@keyframes subir {
-  0% { bottom: -50px; opacity: 0; }
-  20% { opacity: 0.8; }
-  80% { opacity: 0.8; }
-  100% { bottom: 120vh; opacity: 0; }
+/* ✅ CORAZONES SUELTOS QUE FLOTAN */
+.corazon-flotante {
+  position: absolute;
+  font-size: 22px;
+  color: #ff4466;
+  text-shadow: 0 0 8px #ff4466, 0 0 16px rgba(255, 68, 102, 0.7);
+  z-index: 7;
+  opacity: 0.8;
+  user-select: none;
+}
+
+/* ✅ VENTANA DE FRASE AL HACER CLIC */
+.ventana-frase {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  width: 90%;
+  max-width: 450px;
+  padding: 30px;
+  background: rgba(10, 0, 30, 0.92);
+  border: 2px solid #ffaa33;
+  border-radius: 20px;
+  box-shadow: 0 0 30px #ffaa33, 0 0 60px rgba(255, 136, 34, 0.6);
+  text-align: center;
+  z-index: 9999;
+  transition: transform 0.4s ease;
+}
+
+.ventana-frase.activa {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.ventana-frase p {
+  color: #ffddaa;
+  font-size: 20px;
+  line-height: 1.6;
+  text-shadow: 0 0 8px #ff8822;
+}
+
+.fondo-oscuro {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 9998;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease;
+}
+
+.fondo-oscuro.activo {
+  opacity: 1;
+  visibility: visible;
 }
 </style>
 </head>
@@ -268,16 +324,23 @@ body {
   </div>
 
   <div class="texto-centro">
-    <div class="frase-arriba">Contigo todo es mejor</div>
+    <div class="frase-arriba">Contigo todo es mejor ❤️</div>
     <div class="te-amo">TE AMO</div>
     <div class="sandra">SANDRA</div>
   </div>
 
+  <!-- Tus fotos -->
   <div class="foto" id="img1"><img src="san 3.jpeg" alt=""></div>
   <div class="foto" id="img2"><img src="san1.jpeg" alt=""></div>
   <div class="foto" id="img3"><img src="san 2.jpeg" alt=""></div>
   <div class="foto" id="img4"><img src="sam 5.jpeg" alt=""></div>
   <div class="foto" id="img5"><img src="san6.jpeg" alt=""></div>
+
+  <!-- Elementos para la ventana de frases -->
+  <div class="fondo-oscuro" id="fondoOscuro"></div>
+  <div class="ventana-frase" id="ventanaFrase">
+    <p id="textoFrase"></p>
+  </div>
 </div>
 
 <script>
@@ -321,7 +384,7 @@ botonIniciar.addEventListener("click", () => {
   }, 800);
 });
 
-// ✨ ANIMACIONES PRINCIPALES
+// ✨ ANIMACIONES Y FUNCIONES PRINCIPALES
 function iniciarTodo() {
   // Crear estrellas de galaxia
   const contenedorGalaxia = document.getElementById("estrellasGalaxia");
@@ -340,7 +403,7 @@ function iniciarTodo() {
     contenedorGalaxia.appendChild(estrella);
   }
 
-  // Mover fotos
+  // 📸 MOVER FOTOS
   const fotos = [
     {id: "img1", x: 10, y: 10, vx: 0.25, vy: 0.2},
     {id: "img2", x: 85, y: 15, vx: -0.22, vy: 0.28},
@@ -349,40 +412,149 @@ function iniciarTodo() {
     {id: "img5", x: 50, y: 50, vx: 0.2, vy: -0.22}
   ];
 
-  function mover() {
+  // 💬 FRASES CON CORAZONES
+  const frasesActivas = [];
+  const listaFrases = [
+    "❤️ Te amo con todo mi corazón ❤️",
+    "❤️ Eres mi universo ❤️",
+    "❤️ Contigo todo es mejor ❤️",
+    "❤️ Mi vida eres tú ❤️",
+    "❤️ Eres mi sueño hecho realidad ❤️",
+    "❤️ Iluminas mi camino ❤️",
+    "❤️ Para siempre contigo ❤️",
+    "❤️ Lo mejor que me pasó ❤️",
+    "❤️ Mi lugar favorito es a tu lado ❤️",
+    "❤️ Eres la razón de mi sonrisa ❤️",
+    "❤️ Gracias por existir ❤️",
+    "❤️ Eres mi paz y mi alegría ❤️",
+    "❤️ Siempre en mi mente y en mi corazón ❤️",
+    "❤️ Juntos es mi sitio favorito ❤️",
+    "❤️ Amarte es lo más fácil del mundo ❤️"
+  ];
+
+  // ❤️ CORAZONES SUELTOS FLOTANTES
+  const corazonesActivos = [];
+  const tiposCorazon = ["❤️", "🧡", "💛", "💖", "💗"];
+
+  // Crear elementos desde el inicio
+  for (let i = 0; i < 8; i++) crearFrase();
+  for (let i = 0; i < 12; i++) crearCorazon();
+
+  // Renovar constantemente
+  setInterval(crearFrase, 5000);
+  setInterval(crearCorazon, 3000);
+
+  function crearFrase() {
+    const texto = listaFrases[Math.floor(Math.random() * listaFrases.length)];
+    const nuevaFrase = document.createElement("div");
+    nuevaFrase.className = "frase-flotante";
+    nuevaFrase.textContent = texto;
+    contenidoPrincipal.appendChild(nuevaFrase);
+
+    const datos = {
+      elem: nuevaFrase,
+      x: Math.random() * 85 + 5,
+      y: Math.random() * 85 + 5,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: (Math.random() - 0.5) * 0.3
+    };
+    frasesActivas.push(datos);
+
+    setTimeout(() => {
+      const idx = frasesActivas.indexOf(datos);
+      if (idx !== -1) frasesActivas.splice(idx, 1);
+      nuevaFrase.remove();
+    }, 25000);
+  }
+
+  function crearCorazon() {
+    const corazon = document.createElement("div");
+    corazon.className = "corazon-flotante";
+    corazon.textContent = tiposCorazon[Math.floor(Math.random() * tiposCorazon.length)];
+    corazon.style.fontSize = `${Math.random() * 12 + 16}px`;
+    contenidoPrincipal.appendChild(corazon);
+
+    const datos = {
+      elem: corazon,
+      x: Math.random() * 90 + 5,
+      y: Math.random() * 90 + 5,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: (Math.random() - 0.5) * 0.4
+    };
+    corazonesActivos.push(datos);
+
+    setTimeout(() => {
+      const idx = corazonesActivos.indexOf(datos);
+      if (idx !== -1) corazonesActivos.splice(idx, 1);
+      corazon.remove();
+    }, 20000);
+  }
+
+  // 🎮 ANIMACIÓN GENERAL
+  function animarTodo() {
+    // Mover fotos
     fotos.forEach(f => {
       f.x += f.vx;
       f.y += f.vy;
-      if (f.x <= 2 || f.x >= 96) f.vx *= -1;
-      if (f.y <= 2 || f.y >= 96) f.vy *= -1;
+      if (f.x <= 2 || f.x >= 93) f.vx *= -1;
+      if (f.y <= 2 || f.y >= 93) f.vy *= -1;
       document.getElementById(f.id).style.left = f.x + "%";
       document.getElementById(f.id).style.top = f.y + "%";
     });
-    requestAnimationFrame(mover);
-  }
-  mover();
 
-  // Frases románticas
-  const textos = [
-    "Te amo con todo mi corazón",
-    "Eres mi universo",
-    "Contigo todo es mejor",
-    "Mi vida eres tú",
-    "Eres mi sueño hecho realidad",
-    "Iluminas mi camino",
-    "Para siempre contigo",
-    "Lo mejor que me pasó"
+    // Mover frases
+    frasesActivas.forEach(f => {
+      f.x += f.vx;
+      f.y += f.vy;
+      if (f.x <= 1 || f.x >= 97) f.vx *= -1;
+      if (f.y <= 1 || f.y >= 97) f.vy *= -1;
+      f.elem.style.left = f.x + "%";
+      f.elem.style.top = f.y + "%";
+    });
+
+    // Mover corazones sueltos
+    corazonesActivos.forEach(c => {
+      c.x += c.vx;
+      c.y += c.vy;
+      if (c.x <= 1 || c.x >= 98) c.vx *= -1;
+      if (c.y <= 1 || c.y >= 98) c.vy *= -1;
+      c.elem.style.left = c.x + "%";
+      c.elem.style.top = c.y + "%";
+    });
+
+    requestAnimationFrame(animarTodo);
+  }
+  animarTodo();
+
+  // ✅ FRASES PARA MOSTRAR AL HACER CLIC EN LAS FOTOS
+  const frasesVentana = [
+    "❤️ Te amo más de lo que las palabras pueden explicar ❤️",
+    "❤️ Eres lo mejor que me ha pasado en la vida ❤️",
+    "❤️ Contigo cada día es una nueva aventura llena de felicidad ❤️",
+    "❤️ Mi corazón es y siempre será solo tuyo ❤️",
+    "❤️ Eres mi sueño hecho realidad, mi amor eterno ❤️",
+    "❤️ Gracias por iluminar mi mundo con tu sonrisa ❤️",
+    "❤️ A tu lado todo tiene más sentido y más color ❤️",
+    "❤️ Te elegiría una y mil veces más, sin dudarlo ❤️"
   ];
 
-  setInterval(() => {
-    const frase = document.createElement("div");
-    frase.classList.add("frase");
-    frase.textContent = textos[Math.floor(Math.random() * textos.length)];
-    frase.style.left = Math.random() * 85 + "%";
-    frase.style.bottom = "0px";
-    document.body.appendChild(frase);
-    setTimeout(() => frase.remove(), 8000);
-  }, 3500);
+  const fondoOscuro = document.getElementById("fondoOscuro");
+  const ventanaFrase = document.getElementById("ventanaFrase");
+  const textoFrase = document.getElementById("textoFrase");
+
+  document.querySelectorAll(".foto").forEach(foto => {
+    foto.addEventListener("click", () => {
+      const fraseAleatoria = frasesVentana[Math.floor(Math.random() * frasesVentana.length)];
+      textoFrase.textContent = fraseAleatoria;
+      fondoOscuro.classList.add("activo");
+      ventanaFrase.classList.add("activa");
+    });
+  });
+
+  fondoOscuro.addEventListener("click", () => {
+    fondoOscuro.classList.remove("activo");
+    ventanaFrase.classList.remove("activa");
+  });
 }
 </script>
 
