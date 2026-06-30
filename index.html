@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Galaxia TE AMO</title>
+<title>Galaxia Pro</title>
 
 <style>
 body {
@@ -17,17 +17,10 @@ canvas {
   left: 0;
 }
 
-.galaxy {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  perspective: 1200px;
-}
-
 .photo {
   position: absolute;
-  width: 120px;
-  height: 120px;
+  width: 110px;
+  height: 110px;
   border-radius: 15px;
   overflow: hidden;
   box-shadow: 0 0 20px white;
@@ -43,91 +36,101 @@ canvas {
 
 <body>
 
-<canvas id="stars"></canvas>
+<canvas id="c"></canvas>
 
-<div class="galaxy">
+<!-- fotos -->
+<div class="photo" style="left:50%; top:50%; transform: translate(-50%,-50%) rotateY(0deg) translateZ(300px);">
+  <img src="san 3.jpeg">
+</div>
 
-  <div class="photo" style="left:50%; top:50%; transform: translate(-50%,-50%) rotateY(0deg) translateZ(300px);">
-    <img src="san 3.jpeg">
-  </div>
+<div class="photo" style="left:50%; top:50%; transform: translate(-50%,-50%) rotateY(72deg) translateZ(300px);">
+  <img src="sam 5.jpeg">
+</div>
 
-  <div class="photo" style="left:50%; top:50%; transform: translate(-50%,-50%) rotateY(72deg) translateZ(300px);">
-    <img src="sam 5.jpeg">
-  </div>
+<div class="photo" style="left:50%; top:50%; transform: translate(-50%,-50%) rotateY(144deg) translateZ(300px);">
+  <img src="san1.jpeg">
+</div>
 
-  <div class="photo" style="left:50%; top:50%; transform: translate(-50%,-50%) rotateY(144deg) translateZ(300px);">
-    <img src="san1.jpeg">
-  </div>
+<div class="photo" style="left:50%; top:50%; transform: translate(-50%,-50%) rotateY(216deg) translateZ(300px);">
+  <img src="san 2.jpeg">
+</div>
 
-  <div class="photo" style="left:50%; top:50%; transform: translate(-50%,-50%) rotateY(216deg) translateZ(300px);">
-    <img src="san 2.jpeg">
-  </div>
-
-  <div class="photo" style="left:50%; top:50%; transform: translate(-50%,-50%) rotateY(288deg) translateZ(300px);">
-    <img src="san6.jpeg">
-  </div>
-
+<div class="photo" style="left:50%; top:50%; transform: translate(-50%,-50%) rotateY(288deg) translateZ(300px);">
+  <img src="san6.jpeg">
 </div>
 
 <script>
-const canvas = document.getElementById("stars");
+const canvas = document.getElementById("c");
 const ctx = canvas.getContext("2d");
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+canvas.width = innerWidth;
+canvas.height = innerHeight;
 
-let stars = [];
+// puntos del texto
+let points = [];
+let particles = [];
 
-// crear estrellas
-for (let i = 0; i < 400; i++) {
-  stars.push({
-    x: Math.random() * canvas.width,
-    y: Math.random() * canvas.height,
-    r: Math.random() * 2
-  });
-}
-
-// texto invisible base
-function drawTextMask() {
-  const off = document.createElement("canvas");
-  const octx = off.getContext("2d");
+function createTextPoints() {
+  let off = document.createElement("canvas");
+  let octx = off.getContext("2d");
 
   off.width = canvas.width;
   off.height = canvas.height;
 
   octx.fillStyle = "white";
-  octx.font = "bold 80px Arial";
+  octx.font = "bold 90px Arial";
   octx.textAlign = "center";
   octx.fillText("TE AMO SANDRA", canvas.width/2, canvas.height/2);
 
-  return octx.getImageData(0,0,off.width,off.height).data;
+  let data = octx.getImageData(0,0,off.width,off.height).data;
+
+  for (let y = 0; y < off.height; y += 6) {
+    for (let x = 0; x < off.width; x += 6) {
+      let i = (y * off.width + x) * 4;
+      if (data[i] > 200) {
+        points.push({x, y});
+      }
+    }
+  }
 }
 
-const mask = drawTextMask();
+function createParticles() {
+  for (let i = 0; i < 1200; i++) {
+    particles.push({
+      x: Math.random()*canvas.width,
+      y: Math.random()*canvas.height,
+      tx: 0,
+      ty: 0
+    });
+  }
+}
 
 function animate() {
   ctx.clearRect(0,0,canvas.width,canvas.height);
 
-  for (let i = 0; i < stars.length; i++) {
-    let s = stars[i];
+  ctx.fillStyle = "white";
 
-    let index = (Math.floor(s.y) * canvas.width + Math.floor(s.x)) * 4;
+  for (let i = 0; i < particles.length; i++) {
+    let p = particles[i];
 
-    let inText = mask[index] > 200;
+    let target = points[i % points.length];
+
+    p.tx = target.x;
+    p.ty = target.y;
+
+    p.x += (p.tx - p.x) * 0.05;
+    p.y += (p.ty - p.y) * 0.05;
 
     ctx.beginPath();
-    ctx.fillStyle = inText ? "white" : "rgba(255,255,255,0.2)";
-    ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+    ctx.arc(p.x, p.y, 1.5, 0, Math.PI*2);
     ctx.fill();
-
-    s.y -= inText ? 0.3 : 0.1;
-
-    if (s.y < 0) s.y = canvas.height;
   }
 
   requestAnimationFrame(animate);
 }
 
+createTextPoints();
+createParticles();
 animate();
 </script>
 
