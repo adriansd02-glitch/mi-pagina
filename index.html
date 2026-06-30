@@ -8,45 +8,38 @@
 body {
   margin: 0;
   overflow: hidden;
-  background: radial-gradient(circle, #000010, black);
-  font-family: Arial, sans-serif;
+  background: black; /* fondo negro como pediste */
+  font-family: Arial;
 }
 
-/* canvas estrellas + texto */
+/* canvas estrellas */
 canvas {
   position: absolute;
   top: 0;
   left: 0;
 }
 
-/* fotos izquierda */
-.left {
+/* contenedores laterales */
+.side {
   position: absolute;
-  left: 30px;
   top: 50%;
   transform: translateY(-50%);
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 12px;
 }
 
-/* fotos derecha */
-.right {
-  position: absolute;
-  right: 30px;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
+.left { left: 20px; }
+.right { right: 20px; }
 
+/* fotos MÁS PEQUEÑAS + giro */
 .photo {
-  width: 130px;
-  height: 130px;
-  border-radius: 18px;
+  width: 90px;
+  height: 90px;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 0 15px white;
+  box-shadow: 0 0 10px white;
+  animation: spin 6s infinite linear;
 }
 
 .photo img {
@@ -55,12 +48,18 @@ canvas {
   object-fit: cover;
 }
 
+/* giro en su propio eje */
+@keyframes spin {
+  from { transform: rotateY(0deg); }
+  to { transform: rotateY(360deg); }
+}
+
 /* corazones */
 .heart {
   position: absolute;
   color: pink;
   font-size: 18px;
-  animation: floatUp 6s linear infinite;
+  animation: floatUp 6s linear forwards;
 }
 
 @keyframes floatUp {
@@ -69,151 +68,100 @@ canvas {
 }
 
 /* frases */
-.textFloat {
+.text {
   position: absolute;
   color: white;
-  font-size: 16px;
-  animation: floatUp 10s linear infinite;
+  font-size: 14px;
   opacity: 0.8;
+  animation: floatUp 10s linear forwards;
 }
 </style>
 </head>
 
 <body>
 
-<canvas id="canvas"></canvas>
+<canvas id="c"></canvas>
 
-<!-- fotos izquierda -->
-<div class="left">
+<!-- IZQUIERDA -->
+<div class="side left">
   <div class="photo"><img src="san 3.jpeg"></div>
   <div class="photo"><img src="san1.jpeg"></div>
   <div class="photo"><img src="san 2.jpeg"></div>
 </div>
 
-<!-- fotos derecha -->
-<div class="right">
+<!-- DERECHA -->
+<div class="side right">
   <div class="photo"><img src="sam 5.jpeg"></div>
   <div class="photo"><img src="san6.jpeg"></div>
 </div>
 
 <script>
-const canvas = document.getElementById("canvas");
+const canvas = document.getElementById("c");
 const ctx = canvas.getContext("2d");
 
 canvas.width = innerWidth;
 canvas.height = innerHeight;
 
-/* ⭐ ESTRELLAS FONDO */
+/* ⭐ ESTRELLAS */
 let stars = [];
-for (let i = 0; i < 600; i++) {
+for (let i = 0; i < 700; i++) {
   stars.push({
     x: Math.random() * canvas.width,
     y: Math.random() * canvas.height,
-    r: Math.random() * 1.8
+    r: Math.random() * 1.5
   });
 }
 
-/* 💖 CORAZONES */
-function createHeart() {
-  let h = document.createElement("div");
-  h.className = "heart";
-  h.innerHTML = "❤";
-  h.style.left = Math.random() * window.innerWidth + "px";
-  h.style.fontSize = (10 + Math.random()*20) + "px";
-  document.body.appendChild(h);
-
-  setTimeout(() => h.remove(), 6000);
-}
-setInterval(createHeart, 400);
-
-/* ✨ FRASES BONITAS */
-const frases = [
-  "Eres mi universo 💫",
-  "Te pienso siempre ❤️",
-  "Mi lugar favorito eres tú 💕",
-  "Eres magia ✨",
-  "Te amo infinito 💖"
-];
-
-function createText() {
-  let t = document.createElement("div");
-  t.className = "textFloat";
-  t.innerText = frases[Math.floor(Math.random()*frases.length)];
-  t.style.left = Math.random() * window.innerWidth + "px";
-  t.style.bottom = "0px";
-  document.body.appendChild(t);
-
-  setTimeout(() => t.remove(), 10000);
-}
-setInterval(createText, 2000);
-
-/* 🌌 TEXTO TE AMO SANDRA EN PARTICULAS */
-let points = [];
-let particles = [];
-
-function makeText() {
-  let off = document.createElement("canvas");
-  let octx = off.getContext("2d");
-
-  off.width = canvas.width;
-  off.height = canvas.height;
-
-  octx.fillStyle = "white";
-  octx.font = "bold 90px Arial";
-  octx.textAlign = "center";
-  octx.fillText("TE AMO SANDRA", off.width/2, off.height/2);
-
-  let data = octx.getImageData(0,0,off.width,off.height).data;
-
-  for (let y = 0; y < off.height; y += 6) {
-    for (let x = 0; x < off.width; x += 6) {
-      let i = (y * off.width + x) * 4;
-      if (data[i] > 200) {
-        points.push({x,y});
-      }
-    }
-  }
-}
-
-function makeParticles() {
-  for (let i = 0; i < 1000; i++) {
-    particles.push({
-      x: Math.random()*canvas.width,
-      y: Math.random()*canvas.height
-    });
-  }
-}
-
-function animate() {
+/* dibujar estrellas */
+function drawStars() {
   ctx.clearRect(0,0,canvas.width,canvas.height);
-
-  /* estrellas */
   ctx.fillStyle = "white";
+
   for (let s of stars) {
     ctx.beginPath();
     ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
     ctx.fill();
+
+    s.y += 0.2;
+    if (s.y > canvas.height) s.y = 0;
   }
-
-  /* texto */
-  ctx.fillStyle = "white";
-  for (let i = 0; i < particles.length; i++) {
-    let p = particles[i];
-    let t = points[i % points.length];
-
-    p.x += (t.x - p.x) * 0.05;
-    p.y += (t.y - p.y) * 0.05;
-
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, 1.6, 0, Math.PI*2);
-    ctx.fill();
-  }
-
-  requestAnimationFrame(animate);
 }
 
-makeText();
-makeParticles();
+/* 💖 corazones */
+function heart() {
+  const h = document.createElement("div");
+  h.className = "heart";
+  h.innerHTML = "❤";
+  h.style.left = Math.random()*window.innerWidth + "px";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(), 6000);
+}
+setInterval(heart, 300);
+
+/* ✨ frases bonitas */
+const frases = [
+  "TE AMO SANDRA 💖",
+  "Eres mi universo ✨",
+  "Mi corazón es tuyo ❤️",
+  "Siempre tú, siempre yo 💕"
+];
+
+function textFloat() {
+  const t = document.createElement("div");
+  t.className = "text";
+  t.innerText = frases[Math.floor(Math.random()*frases.length)];
+  t.style.left = Math.random()*window.innerWidth + "px";
+  t.style.bottom = "0px";
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(), 10000);
+}
+setInterval(textFloat, 2000);
+
+/* loop */
+function animate() {
+  drawStars();
+  requestAnimationFrame(animate);
+}
 animate();
 </script>
 
