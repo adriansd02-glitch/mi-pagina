@@ -20,29 +20,17 @@ canvas {
   z-index: 1;
 }
 
-/* Contenedor de fotos FIJO */
-.side {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  z-index: 10;
-}
-
-.left { left: 3%; }
-.right { right: 3%; }
-
-/* Fotos más pequeñas */
+/* Cada foto tiene su propia animación independiente */
 .photo {
-  width: 55px;
-  height: 55px;
-  border-radius: 10px;
+  position: absolute;
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
-  animation: spin 7s infinite linear;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+  animation: girar 6s infinite linear;
   perspective: 1000px;
+  z-index: 10;
 }
 
 .photo img {
@@ -52,9 +40,58 @@ canvas {
   display: block;
 }
 
-@keyframes spin {
+/* Animación de giro */
+@keyframes girar {
   from { transform: rotateY(0deg); }
   to { transform: rotateY(360deg); }
+}
+
+/* Movimientos diferentes para cada foto */
+.f1 { animation: mover1 25s linear infinite; }
+.f2 { animation: mover2 29s linear infinite; }
+.f3 { animation: mover3 32s linear infinite; }
+.f4 { animation: mover4 27s linear infinite; }
+.f5 { animation: mover5 30s linear infinite; }
+
+/* Rutas distintas, nunca se salen de la pantalla */
+@keyframes mover1 {
+  0%   { top: 10%; left: 10%; }
+  25%  { top: 20%; left: 80%; }
+  50%  { top: 75%; left: 70%; }
+  75%  { top: 65%; left: 15%; }
+  100% { top: 10%; left: 10%; }
+}
+
+@keyframes mover2 {
+  0%   { top: 30%; left: 85%; }
+  25%  { top: 80%; left: 75%; }
+  50%  { top: 60%; left: 10%; }
+  75%  { top: 15%; left: 20%; }
+  100% { top: 30%; left: 85%; }
+}
+
+@keyframes mover3 {
+  0%   { top: 70%; left: 20%; }
+  25%  { top: 10%; left: 75%; }
+  50%  { top: 25%; left: 15%; }
+  75%  { top: 80%; left: 80%; }
+  100% { top: 70%; left: 20%; }
+}
+
+@keyframes mover4 {
+  0%   { top: 50%; left: 85%; }
+  25%  { top: 75%; left: 10%; }
+  50%  { top: 15%; left: 70%; }
+  75%  { top: 85%; left: 60%; }
+  100% { top: 50%; left: 85%; }
+}
+
+@keyframes mover5 {
+  0%   { top: 85%; left: 50%; }
+  25%  { top: 15%; left: 25%; }
+  50%  { top: 40%; left: 80%; }
+  75%  { top: 70%; left: 30%; }
+  100% { top: 85%; left: 50%; }
 }
 
 .heart {
@@ -62,10 +99,10 @@ canvas {
   color: #ff99cc;
   font-size: 16px;
   z-index: 5;
-  animation: floatUp 6s linear forwards;
+  animation: flotar 6s linear forwards;
 }
 
-@keyframes floatUp {
+@keyframes flotar {
   from { transform: translateY(100vh) scale(0.8); opacity: 1; }
   to { transform: translateY(-20vh) scale(1.1); opacity: 0; }
 }
@@ -77,7 +114,7 @@ canvas {
   font-weight: 500;
   opacity: 0.9;
   z-index: 5;
-  animation: floatUp 10s linear forwards;
+  animation: flotar 10s linear forwards;
   text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
 }
 </style>
@@ -87,138 +124,150 @@ canvas {
 
 <canvas id="c"></canvas>
 
-<!-- IZQUIERDA -->
-<div class="side left">
-  <div class="photo"><img src="san 3.jpeg" alt="Foto 3"></div>
-  <div class="photo"><img src="san1.jpeg" alt="Foto 1"></div>
-  <div class="photo"><img src="san 2.jpeg" alt="Foto 2"></div>
-</div>
-
-<!-- DERECHA -->
-<div class="side right">
-  <div class="photo"><img src="sam 5.jpeg" alt="Foto 5"></div>
-  <div class="photo"><img src="san6.jpeg" alt="Foto 6"></div>
-</div>
+<!-- Cada foto por separado con su propio movimiento -->
+<div class="photo f1"><img src="san 3.jpeg" alt="Foto 3"></div>
+<div class="photo f2"><img src="san1.jpeg" alt="Foto 1"></div>
+<div class="photo f3"><img src="san 2.jpeg" alt="Foto 2"></div>
+<div class="photo f4"><img src="sam 5.jpeg" alt="Foto 5"></div>
+<div class="photo f5"><img src="san6.jpeg" alt="Foto 6"></div>
 
 <script>
 const canvas = document.getElementById("c");
 const ctx = canvas.getContext("2d");
 
-function resizeCanvas() {
+function ajustarLienzo() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 }
-resizeCanvas();
-window.addEventListener("resize", resizeCanvas);
+ajustarLienzo();
+window.addEventListener("resize", ajustarLienzo);
 
-/* ⭐ ESTRELLAS DE FONDO */
-let stars = [];
+/* ⭐ Estrellas de fondo */
+let estrellasFondo = [];
 for (let i = 0; i < 600; i++) {
-  stars.push({
+  estrellasFondo.push({
     x: Math.random() * canvas.width,
     y: Math.random() * canvas.height,
-    r: Math.random() * 1
+    tam: Math.random() * 1.1
   });
 }
 
-/* ✨ TEXTO "TE AMO SANDRA" - AHORA MÁS COMPACTO Y CENTRADO */
-let textStars = [];
-function createTextStars() {
-  textStars = [];
-  const tempCanvas = document.createElement("canvas");
-  const tempCtx = tempCanvas.getContext("2d");
-  const size = 55; // Tamaño más reducido para que entre en cualquier celular
-  tempCanvas.width = size * 5.5; // Ancho justo para que no sobre ni falte
-  tempCanvas.height = size;
+/* ✨ TEXTO: TE AMO arriba / SANDRA abajo, formado de estrellas rojas claras */
+let estrellasTexto = [];
+function crearTextoEstrellas() {
+  estrellasTexto = [];
+  const tamLetra = 80;
+  const separacion = tamLetra * 1.4;
+  const centroX = canvas.width / 2;
+  const centroY = canvas.height / 2;
 
-  tempCtx.fillStyle = "white";
-  tempCtx.font = "bold " + size + "px Arial";
-  tempCtx.textAlign = "center";
-  tempCtx.textBaseline = "middle";
-  tempCtx.fillText("TE AMO SANDRA", tempCanvas.width / 2, tempCanvas.height / 2);
+  // Línea 1: TE AMO
+  const lienzo1 = document.createElement("canvas");
+  const ctx1 = lienzo1.getContext("2d");
+  lienzo1.width = tamLetra * 3.5;
+  lienzo1.height = tamLetra;
+  ctx1.fillStyle = "#fff";
+  ctx1.font = "bold " + tamLetra + "px Arial";
+  ctx1.textAlign = "center";
+  ctx1.textBaseline = "middle";
+  ctx1.fillText("TE AMO", lienzo1.width / 2, lienzo1.height / 2);
+  const datos1 = ctx1.getImageData(0, 0, lienzo1.width, lienzo1.height).data;
 
-  const imgData = tempCtx.getImageData(0, 0, tempCanvas.width, tempCanvas.height);
-  const data = imgData.data;
-  const centerX = canvas.width / 2;
-  const centerY = canvas.height / 2;
+  for (let y = 0; y < lienzo1.height; y += 2) {
+    for (let x = 0; x < lienzo1.width; x += 2) {
+      const pos = (y * lienzo1.width + x) * 4;
+      if (datos1[pos + 3] > 150) {
+        estrellasTexto.push({
+          x: centroX - (lienzo1.width / 2) + x,
+          y: centroY - separacion / 2 + y,
+          tam: 0.6
+        });
+      }
+    }
+  }
 
-  // Espaciado más cerrado para que se vea completo
-  for (let y = 0; y < tempCanvas.height; y += 2.5) {
-    for (let x = 0; x < tempCanvas.width; x += 2.5) {
-      const idx = (y * tempCanvas.width + x) * 4;
-      if (data[idx + 3] > 128) {
-        textStars.push({
-          x: centerX - (tempCanvas.width / 2) + x,
-          y: centerY - (tempCanvas.height / 2) + y,
-          r: Math.random() * 0.5 + 0.2
+  // Línea 2: SANDRA
+  const lienzo2 = document.createElement("canvas");
+  const ctx2 = lienzo2.getContext("2d");
+  lienzo2.width = tamLetra * 4.2;
+  lienzo2.height = tamLetra;
+  ctx2.fillStyle = "#fff";
+  ctx2.font = "bold " + tamLetra + "px Arial";
+  ctx2.textAlign = "center";
+  ctx2.textBaseline = "middle";
+  ctx2.fillText("SANDRA", lienzo2.width / 2, lienzo2.height / 2);
+  const datos2 = ctx2.getImageData(0, 0, lienzo2.width, lienzo2.height).data;
+
+  for (let y = 0; y < lienzo2.height; y += 2) {
+    for (let x = 0; x < lienzo2.width; x += 2) {
+      const pos = (y * lienzo2.width + x) * 4;
+      if (datos2[pos + 3] > 150) {
+        estrellasTexto.push({
+          x: centroX - (lienzo2.width / 2) + x,
+          y: centroY + separacion / 2 + y,
+          tam: 0.6
         });
       }
     }
   }
 }
-createTextStars();
-window.addEventListener("resize", createTextStars);
+crearTextoEstrellas();
+window.addEventListener("resize", crearTextoEstrellas);
 
-/* DIBUJAR TODO */
-function drawStars() {
+/* 🎨 Animación general */
+function animar() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Fondo de estrellas blancas
-  ctx.fillStyle = "white";
-  for (let s of stars) {
+  // Dibujar estrellas de fondo
+  ctx.fillStyle = "#ffffff";
+  for (let e of estrellasFondo) {
     ctx.beginPath();
-    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    ctx.arc(e.x, e.y, e.tam, 0, Math.PI * 2);
     ctx.fill();
-    s.y += 0.2;
-    if (s.y > canvas.height) s.y = 0;
+    e.y += 0.22;
+    if (e.y > canvas.height) e.y = 0;
   }
 
-  // Texto en estrellas ROJAS
-  ctx.fillStyle = "#ff2244";
-  for (let ts of textStars) {
+  // Dibujar texto con estrellas rojas
+  ctx.fillStyle = "#ff2233";
+  for (let et of estrellasTexto) {
     ctx.beginPath();
-    ctx.arc(ts.x, ts.y, ts.r, 0, Math.PI * 2);
+    ctx.arc(et.x, et.y, et.tam, 0, Math.PI * 2);
     ctx.fill();
   }
-}
 
-/* 💖 CORAZONES */
-function heart() {
-  const h = document.createElement("div");
-  h.className = "heart";
-  h.innerHTML = "❤";
-  h.style.left = Math.random() * window.innerWidth + "px";
-  document.body.appendChild(h);
-  setTimeout(() => h.remove(), 6000);
+  requestAnimationFrame(animar);
 }
-setInterval(heart, 400);
+animar();
 
-/* ✨ FRASES */
+/* 💖 Corazones flotando */
+setInterval(() => {
+  const corazon = document.createElement("div");
+  corazon.className = "heart";
+  corazon.textContent = "❤";
+  corazon.style.left = Math.random() * window.innerWidth + "px";
+  document.body.appendChild(corazon);
+  setTimeout(() => corazon.remove(), 6000);
+}, 400);
+
+/* ✨ Frases */
 const frases = [
   "TE AMO SANDRA 💖",
   "Eres mi universo ✨",
   "Mi corazón es tuyo ❤️",
   "Siempre contigo 💕",
-  "Iluminas mi vida ⭐",
-  "Lo mejor que me pasó 💞"
+  "Iluminas mi vida ⭐"
 ];
 
-function textFloat() {
-  const t = document.createElement("div");
-  t.className = "text";
-  t.innerText = frases[Math.floor(Math.random() * frases.length)];
-  t.style.left = Math.random() * (window.innerWidth - 140) + "px";
-  t.style.bottom = "0px";
-  document.body.appendChild(t);
-  setTimeout(() => t.remove(), 10000);
-}
-setInterval(textFloat, 2500);
+setInterval(() => {
+  const texto = document.createElement("div");
+  texto.className = "text";
+  texto.textContent = frases[Math.floor(Math.random() * frases.length)];
+  texto.style.left = Math.random() * (window.innerWidth - 150) + "px";
+  document.body.appendChild(texto);
+  setTimeout(() => texto.remove(), 10000);
+}, 2500);
 
-function animate() {
-  drawStars();
-  requestAnimationFrame(animate);
-}
-animate();
 </script>
 
 </body>
