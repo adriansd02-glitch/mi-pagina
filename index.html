@@ -2,34 +2,35 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Universo Sandra</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para Sandra ❤️</title>
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 body {
-  margin: 0;
+  background: #000;
   overflow: hidden;
-  background: #000000;
-  font-family: Arial, sans-serif;
+  height: 100vh;
+  width: 100vw;
+  position: relative;
 }
+
 canvas {
   position: absolute;
   top: 0;
   left: 0;
   z-index: 1;
+  width: 100%;
+  height: 100%;
 }
-/* Estilo de cada foto en órbita */
+
+/* Fotos en órbita */
 .foto {
   position: absolute;
-  width: 45px;
-  height: 45px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   overflow: hidden;
-  box-shadow: 0 0 10px rgba(255, 50, 80, 0.7), 0 0 20px rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 8px #ff3355, 0 0 15px rgba(255,255,255,0.4);
   z-index: 10;
   transform-origin: center center;
 }
@@ -39,63 +40,48 @@ canvas {
   object-fit: cover;
   display: block;
 }
-/* Órbitas con diferentes radios y velocidades */
-.orbita1 { animation: orbitar 25s linear infinite; }
-.orbita2 { animation: orbitar 32s linear infinite; }
-.orbita3 { animation: orbitar 38s linear infinite; }
-.orbita4 { animation: orbitar 42s linear infinite; }
-.orbita5 { animation: orbitar 48s linear infinite; }
-@keyframes orbitar {
-  from { transform: rotate(0deg) translateX(160px) rotate(0deg); }
-  to   { transform: rotate(360deg) translateX(160px) rotate(-360deg); }
+
+/* Órbitas separadas */
+.o1 { animation: giro1 26s linear infinite; }
+.o2 { animation: giro2 32s linear infinite; }
+.o3 { animation: giro3 38s linear infinite; }
+.o4 { animation: giro4 44s linear infinite; }
+.o5 { animation: giro5 50s linear infinite; }
+
+@keyframes giro1 {
+  0% { transform: rotate(0deg) translateX(150px) rotate(0deg); }
+  100% { transform: rotate(360deg) translateX(150px) rotate(-360deg); }
 }
-.orbita2 { animation: orbitar2 32s linear infinite; }
-@keyframes orbitar2 {
-  from { transform: rotate(0deg) translateX(210px) rotate(0deg); }
-  to   { transform: rotate(360deg) translateX(210px) rotate(-360deg); }
+@keyframes giro2 {
+  0% { transform: rotate(70deg) translateX(200px) rotate(-70deg); }
+  100% { transform: rotate(430deg) translateX(200px) rotate(-430deg); }
 }
-.orbita3 { animation: orbitar3 38s linear infinite; }
-@keyframes orbitar3 {
-  from { transform: rotate(0deg) translateX(260px) rotate(0deg); }
-  to   { transform: rotate(360deg) translateX(260px) rotate(-360deg); }
+@keyframes giro3 {
+  0% { transform: rotate(140deg) translateX(250px) rotate(-140deg); }
+  100% { transform: rotate(500deg) translateX(250px) rotate(-500deg); }
 }
-.orbita4 { animation: orbitar4 42s linear infinite; }
-@keyframes orbitar4 {
-  from { transform: rotate(45deg) translateX(180px) rotate(-45deg); }
-  to   { transform: rotate(405deg) translateX(180px) rotate(-405deg); }
+@keyframes giro4 {
+  0% { transform: rotate(210deg) translateX(170px) rotate(-210deg); }
+  100% { transform: rotate(570deg) translateX(170px) rotate(-570deg); }
 }
-.orbita5 { animation: orbitar5 48s linear infinite; }
-@keyframes orbitar5 {
-  from { transform: rotate(90deg) translateX(230px) rotate(-90deg); }
-  to   { transform: rotate(450deg) translateX(230px) rotate(-450deg); }
+@keyframes giro5 {
+  0% { transform: rotate(280deg) translateX(220px) rotate(-280deg); }
+  100% { transform: rotate(640deg) translateX(220px) rotate(-640deg); }
 }
-.heart {
+
+/* Corazones flotando */
+.corazon {
   position: absolute;
-  color: #ff6688;
+  color: #ff6699;
   font-size: 18px;
   z-index: 5;
-  animation: flotar 7s linear forwards;
-}
-@keyframes flotar {
-  from { transform: translateY(100vh) scale(0.7); opacity: 0; }
-  10%  { opacity: 1; }
-  90%  { opacity: 1; }
-  to   { transform: translateY(-20vh) scale(1.2); opacity: 0; }
-}
-.frase {
-  position: absolute;
-  color: #ffffff;
-  font-size: 14px;
-  font-weight: bold;
-  text-shadow: 0 0 8px #ff2244, 0 0 15px #ff2244;
-  z-index: 8;
-  animation: subir 11s linear forwards;
+  animation: subir 7s linear forwards;
 }
 @keyframes subir {
-  from { transform: translateY(100vh); opacity: 0; }
-  15%  { opacity: 1; }
-  85%  { opacity: 1; }
-  to   { transform: translateY(-25vh); opacity: 0; }
+  0% { transform: translateY(100vh); opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { transform: translateY(-20vh); opacity: 0; }
 }
 </style>
 </head>
@@ -103,120 +89,115 @@ canvas {
 
 <canvas id="lienzo"></canvas>
 
-<!-- Fotos girando en órbita -->
-<div class="foto orbita1"><img src="san 3.jpeg" alt="Foto 3"></div>
-<div class="foto orbita2"><img src="san1.jpeg" alt="Foto 1"></div>
-<div class="foto orbita3"><img src="san 2.jpeg" alt="Foto 2"></div>
-<div class="foto orbita4"><img src="sam 5.jpeg" alt="Foto 5"></div>
-<div class="foto orbita5"><img src="san6.jpeg" alt="Foto 6"></div>
+<!-- Tus fotos -->
+<div class="foto o1"><img src="san 3.jpeg" alt="Foto"></div>
+<div class="foto o2"><img src="san1.jpeg" alt="Foto"></div>
+<div class="foto o3"><img src="san 2.jpeg" alt="Foto"></div>
+<div class="foto o4"><img src="sam 5.jpeg" alt="Foto"></div>
+<div class="foto o5"><img src="san6.jpeg" alt="Foto"></div>
 
 <script>
 const lienzo = document.getElementById("lienzo");
 const ctx = lienzo.getContext("2d");
-let ancho = window.innerWidth;
-let alto = window.innerHeight;
 
-function ajustarLienzo() {
-  ancho = window.innerWidth;
-  alto = window.innerHeight;
-  lienzo.width = ancho;
-  lienzo.height = alto;
-  crearTextoEstrellas();
+function ajustar() {
+  lienzo.width = window.innerWidth;
+  lienzo.height = window.innerHeight;
 }
-ajustarLienzo();
-window.addEventListener("resize", ajustarLienzo);
+ajustar();
+window.addEventListener("resize", ajustar);
 
-// Estrellas de fondo
-let estrellasFondo = [];
-for (let i = 0; i < 800; i++) {
-  estrellasFondo.push({
-    x: Math.random() * ancho,
-    y: Math.random() * alto,
-    tam: Math.random() * 1.2,
-    velocidad: Math.random() * 0.15 + 0.05
+// 👉 Estrellas de fondo (ahora sí se ven)
+let estrellas = [];
+for (let i = 0; i < 900; i++) {
+  estrellas.push({
+    x: Math.random() * lienzo.width,
+    y: Math.random() * lienzo.height,
+    tam: Math.random() * 1.1,
+    vel: Math.random() * 0.12 + 0.03
   });
 }
 
-// Texto "TE AMO / SANDRA" formado por estrellas rojas
-let estrellasTexto = [];
-function crearTextoEstrellas() {
-  estrellasTexto = [];
-  const tamLetra = 75;
-  const separacion = tamLetra * 1.3;
-  const centroX = ancho / 2;
-  const centroY = alto / 2;
+// 👉 Texto TE AMO / SANDRA en estrellas rojas
+let textoEstrellas = [];
+function crearTexto() {
+  textoEstrellas = [];
+  const tam = 65;
+  const centroX = lienzo.width / 2;
+  const centroY = lienzo.height / 2;
 
   // Línea 1: TE AMO
-  const lienzoTemp1 = document.createElement("canvas");
-  const ctxTemp1 = lienzoTemp1.getContext("2d");
-  lienzoTemp1.width = tamLetra * 3.4;
-  lienzoTemp1.height = tamLetra;
-  ctxTemp1.fillStyle = "#fff";
-  ctxTemp1.font = "bold " + tamLetra + "px Arial, sans-serif";
-  ctxTemp1.textAlign = "center";
-  ctxTemp1.textBaseline = "middle";
-  ctxTemp1.fillText("TE AMO", lienzoTemp1.width / 2, lienzoTemp1.height / 2);
-  const datos1 = ctxTemp1.getImageData(0, 0, lienzoTemp1.width, lienzoTemp1.height).data;
+  const t1 = document.createElement("canvas");
+  const c1 = t1.getContext("2d");
+  t1.width = tam * 3.3;
+  t1.height = tam;
+  c1.fillStyle = "#fff";
+  c1.font = `bold ${tam}px Arial`;
+  c1.textAlign = "center";
+  c1.textBaseline = "middle";
+  c1.fillText("TE AMO", t1.width/2, t1.height/2);
+  const d1 = c1.getImageData(0,0,t1.width,t1.height).data;
 
-  for (let y = 0; y < lienzoTemp1.height; y += 2) {
-    for (let x = 0; x < lienzoTemp1.width; x += 2) {
-      const pos = (y * lienzoTemp1.width + x) * 4;
-      if (datos1[pos + 3] > 140) {
-        estrellasTexto.push({
-          x: centroX - (lienzoTemp1.width / 2) + x,
-          y: centroY - separacion / 2 + y,
-          tam: 0.65
+  for (let y=0; y<t1.height; y+=2) {
+    for (let x=0; x<t1.width; x+=2) {
+      const pos = (y * t1.width + x) * 4;
+      if (d1[pos+3] > 120) {
+        textoEstrellas.push({
+          x: centroX - t1.width/2 + x,
+          y: centroY - tam*0.8 + y,
+          tam: 0.7
         });
       }
     }
   }
 
   // Línea 2: SANDRA
-  const lienzoTemp2 = document.createElement("canvas");
-  const ctxTemp2 = lienzoTemp2.getContext("2d");
-  lienzoTemp2.width = tamLetra * 4;
-  lienzoTemp2.height = tamLetra;
-  ctxTemp2.fillStyle = "#fff";
-  ctxTemp2.font = "bold " + tamLetra + "px Arial, sans-serif";
-  ctxTemp2.textAlign = "center";
-  ctxTemp2.textBaseline = "middle";
-  ctxTemp2.fillText("SANDRA", lienzoTemp2.width / 2, lienzoTemp2.height / 2);
-  const datos2 = ctxTemp2.getImageData(0, 0, lienzoTemp2.width, lienzoTemp2.height).data;
+  const t2 = document.createElement("canvas");
+  const c2 = t2.getContext("2d");
+  t2.width = tam * 3.9;
+  t2.height = tam;
+  c2.fillStyle = "#fff";
+  c2.font = `bold ${tam}px Arial`;
+  c2.textAlign = "center";
+  c2.textBaseline = "middle";
+  c2.fillText("SANDRA", t2.width/2, t2.height/2);
+  const d2 = c2.getImageData(0,0,t2.width,t2.height).data;
 
-  for (let y = 0; y < lienzoTemp2.height; y += 2) {
-    for (let x = 0; x < lienzoTemp2.width; x += 2) {
-      const pos = (y * lienzoTemp2.width + x) * 4;
-      if (datos2[pos + 3] > 140) {
-        estrellasTexto.push({
-          x: centroX - (lienzoTemp2.width / 2) + x,
-          y: centroY + separacion / 2 + y,
-          tam: 0.65
+  for (let y=0; y<t2.height; y+=2) {
+    for (let x=0; x<t2.width; x+=2) {
+      const pos = (y * t2.width + x) * 4;
+      if (d2[pos+3] > 120) {
+        textoEstrellas.push({
+          x: centroX - t2.width/2 + x,
+          y: centroY + tam*0.8 + y,
+          tam: 0.7
         });
       }
     }
   }
 }
-crearTextoEstrellas();
+crearTexto();
+window.addEventListener("resize", crearTexto);
 
-// Animación principal
+// 👉 Animación principal
 function animar() {
-  ctx.clearRect(0, 0, ancho, alto);
+  ctx.clearRect(0,0,lienzo.width,lienzo.height);
 
-  // Estrellas de fondo
+  // Dibujar estrellas de fondo
   ctx.fillStyle = "#ffffff";
-  for (let e of estrellasFondo) {
+  for (let e of estrellas) {
     ctx.beginPath();
-    ctx.arc(e.x, e.y, e.tam, 0, Math.PI * 2);
+    ctx.arc(e.x, e.y, e.tam, 0, Math.PI*2);
     ctx.fill();
-    e.y += e.velocidad;
-    if (e.y > alto) e.y = 0;
+    e.y += e.vel;
+    if (e.y > lienzo.height) e.y = 0;
   }
 
-  // Texto en estrellas rojas
-  ctx.fillStyle = "#ff2244";
-  for (let et of estrellasTexto) {
+  // Dibujar texto rojo
+  ctx.fillStyle = "#ff2233";
+  for (let et of textoEstrellas) {
     ctx.beginPath();
-    ctx.arc(et.x, et.y, et.tam, 0, Math.PI * 2);
+    ctx.arc(et.x, et.y, et.tam, 0, Math.PI*2);
     ctx.fill();
   }
 
@@ -224,33 +205,15 @@ function animar() {
 }
 animar();
 
-// Corazones flotando
+// Corazones que suben
 setInterval(() => {
-  const corazon = document.createElement("div");
-  corazon.className = "heart";
-  corazon.textContent = "❤";
-  corazon.style.left = Math.random() * ancho + "px";
-  document.body.appendChild(corazon);
-  setTimeout(() => corazon.remove(), 7000);
-}, 500);
-
-// Frases románticas
-const frases = [
-  "TE AMO SANDRA 💖",
-  "Eres mi universo ✨",
-  "Mi corazón es tuyo ❤️",
-  "Amor de mi vida 💕",
-  "Siempre contigo ⭐",
-  "Iluminas mi camino 💞"
-];
-setInterval(() => {
-  const texto = document.createElement("div");
-  texto.className = "frase";
-  texto.textContent = frases[Math.floor(Math.random() * frases.length)];
-  texto.style.left = Math.random() * (ancho - 160) + "px";
-  document.body.appendChild(texto);
-  setTimeout(() => texto.remove(), 11000);
-}, 3000);
+  const c = document.createElement("div");
+  c.className = "corazon";
+  c.textContent = "❤";
+  c.style.left = Math.random() * 100 + "%";
+  document.body.appendChild(c);
+  setTimeout(() => c.remove(), 7000);
+}, 600);
 </script>
 
 </body>
