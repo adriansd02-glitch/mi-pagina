@@ -2,78 +2,81 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Universo Sandra</title>
 
 <style>
 body {
   margin: 0;
   overflow: hidden;
-  background: black; /* fondo negro como pediste */
-  font-family: Arial;
+  background: black;
+  font-family: Arial, sans-serif;
 }
 
-/* canvas estrellas */
 canvas {
   position: absolute;
   top: 0;
   left: 0;
+  z-index: 1;
 }
 
-/* contenedores laterales */
 .side {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 15px;
+  z-index: 10;
 }
 
 .left { left: 20px; }
 .right { right: 20px; }
 
-/* fotos MÁS PEQUEÑAS + giro */
 .photo {
-  width: 90px;
-  height: 90px;
+  width: 95px;
+  height: 95px;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 0 10px white;
-  animation: spin 6s infinite linear;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.7);
+  animation: spin 7s infinite linear;
+  perspective: 1000px;
 }
 
 .photo img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
 }
 
-/* giro en su propio eje */
 @keyframes spin {
   from { transform: rotateY(0deg); }
   to { transform: rotateY(360deg); }
 }
 
-/* corazones */
 .heart {
   position: absolute;
-  color: pink;
-  font-size: 18px;
+  color: #ff99cc;
+  font-size: 20px;
+  z-index: 5;
   animation: floatUp 6s linear forwards;
 }
 
 @keyframes floatUp {
-  from { transform: translateY(100vh); opacity: 1; }
-  to { transform: translateY(-20vh); opacity: 0; }
+  from { transform: translateY(100vh) scale(0.8); opacity: 1; }
+  to { transform: translateY(-20vh) scale(1.2); opacity: 0; }
 }
 
-/* frases */
 .text {
   position: absolute;
-  color: white;
-  font-size: 14px;
-  opacity: 0.8;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 500;
+  opacity: 0.9;
+  z-index: 5;
   animation: floatUp 10s linear forwards;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
 }
 </style>
 </head>
@@ -84,80 +87,129 @@ canvas {
 
 <!-- IZQUIERDA -->
 <div class="side left">
-  <div class="photo"><img src="san 3.jpeg"></div>
-  <div class="photo"><img src="san1.jpeg"></div>
-  <div class="photo"><img src="san 2.jpeg"></div>
+  <div class="photo"><img src="san 3.jpeg" alt="Foto 3"></div>
+  <div class="photo"><img src="san1.jpeg" alt="Foto 1"></div>
+  <div class="photo"><img src="san 2.jpeg" alt="Foto 2"></div>
 </div>
 
 <!-- DERECHA -->
 <div class="side right">
-  <div class="photo"><img src="sam 5.jpeg"></div>
-  <div class="photo"><img src="san6.jpeg"></div>
+  <div class="photo"><img src="sam 5.jpeg" alt="Foto 5"></div>
+  <div class="photo"><img src="san6.jpeg" alt="Foto 6"></div>
 </div>
 
 <script>
 const canvas = document.getElementById("c");
 const ctx = canvas.getContext("2d");
 
-canvas.width = innerWidth;
-canvas.height = innerHeight;
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
 
-/* ⭐ ESTRELLAS */
+/* ⭐ ESTRELLAS NORMALES */
 let stars = [];
-for (let i = 0; i < 700; i++) {
+for (let i = 0; i < 750; i++) {
   stars.push({
     x: Math.random() * canvas.width,
     y: Math.random() * canvas.height,
-    r: Math.random() * 1.5
+    r: Math.random() * 1.6
   });
 }
 
-/* dibujar estrellas */
+/* ✨ ESTRELLAS QUE FORMAN EL TEXTO */
+let textStars = [];
+function createTextStars() {
+  textStars = [];
+  const tempCanvas = document.createElement("canvas");
+  const tempCtx = tempCanvas.getContext("2d");
+  const size = 220;
+  tempCanvas.width = size * 4;
+  tempCanvas.height = size;
+
+  tempCtx.fillStyle = "white";
+  tempCtx.font = "bold " + size + "px Arial";
+  tempCtx.textAlign = "center";
+  tempCtx.textBaseline = "middle";
+  tempCtx.fillText("TE AMO SANDRA", tempCanvas.width / 2, tempCanvas.height / 2);
+
+  const imgData = tempCtx.getImageData(0, 0, tempCanvas.width, tempCanvas.height);
+  const data = imgData.data;
+  const centerX = canvas.width / 2;
+  const centerY = canvas.height / 2;
+
+  for (let y = 0; y < tempCanvas.height; y += 3) {
+    for (let x = 0; x < tempCanvas.width; x += 3) {
+      const idx = (y * tempCanvas.width + x) * 4;
+      if (data[idx + 3] > 128) {
+        textStars.push({
+          x: centerX - (tempCanvas.width / 2) + x,
+          y: centerY - (tempCanvas.height / 2) + y,
+          r: Math.random() * 0.9 + 0.2
+        });
+      }
+    }
+  }
+}
+createTextStars();
+window.addEventListener("resize", createTextStars);
+
+/* DIBUJAR TODO */
 function drawStars() {
-  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.fillStyle = "white";
 
+  // Dibujar estrellas del fondo
   for (let s of stars) {
     ctx.beginPath();
-    ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
     ctx.fill();
-
-    s.y += 0.2;
+    s.y += 0.25;
     if (s.y > canvas.height) s.y = 0;
+  }
+
+  // Dibujar estrellas que forman el texto
+  for (let ts of textStars) {
+    ctx.beginPath();
+    ctx.arc(ts.x, ts.y, ts.r, 0, Math.PI * 2);
+    ctx.fill();
   }
 }
 
-/* 💖 corazones */
+/* 💖 CORAZONES */
 function heart() {
   const h = document.createElement("div");
   h.className = "heart";
   h.innerHTML = "❤";
-  h.style.left = Math.random()*window.innerWidth + "px";
+  h.style.left = Math.random() * window.innerWidth + "px";
   document.body.appendChild(h);
-  setTimeout(()=>h.remove(), 6000);
+  setTimeout(() => h.remove(), 6000);
 }
-setInterval(heart, 300);
+setInterval(heart, 350);
 
-/* ✨ frases bonitas */
+/* ✨ FRASES */
 const frases = [
   "TE AMO SANDRA 💖",
   "Eres mi universo ✨",
-  "Mi corazón es tuyo ❤️",
-  "Siempre tú, siempre yo 💕"
+  "Mi corazón es solo tuyo ❤️",
+  "Siempre contigo 💕",
+  "Iluminas mi vida ⭐",
+  "Eres lo más bonito que tengo 💞"
 ];
 
 function textFloat() {
   const t = document.createElement("div");
   t.className = "text";
-  t.innerText = frases[Math.floor(Math.random()*frases.length)];
-  t.style.left = Math.random()*window.innerWidth + "px";
+  t.innerText = frases[Math.floor(Math.random() * frases.length)];
+  t.style.left = Math.random() * (window.innerWidth - 200) + "px";
   t.style.bottom = "0px";
   document.body.appendChild(t);
-  setTimeout(()=>t.remove(), 10000);
+  setTimeout(() => t.remove(), 10000);
 }
-setInterval(textFloat, 2000);
+setInterval(textFloat, 2200);
 
-/* loop */
 function animate() {
   drawStars();
   requestAnimationFrame(animate);
