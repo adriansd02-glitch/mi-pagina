@@ -4,232 +4,216 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Universo Sandra</title>
-
 <style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 body {
   margin: 0;
   overflow: hidden;
   background: #000000;
   font-family: Arial, sans-serif;
 }
-
 canvas {
   position: absolute;
   top: 0;
   left: 0;
   z-index: 1;
 }
-
-/* Cada foto tiene su propia animación independiente */
-.photo {
+/* Estilo de cada foto en órbita */
+.foto {
   position: absolute;
-  width: 42px;
-  height: 42px;
-  border-radius: 8px;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
   overflow: hidden;
-  box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
-  animation: girar 6s infinite linear;
-  perspective: 1000px;
+  box-shadow: 0 0 10px rgba(255, 50, 80, 0.7), 0 0 20px rgba(255, 255, 255, 0.3);
   z-index: 10;
+  transform-origin: center center;
 }
-
-.photo img {
+.foto img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
-
-/* Animación de giro */
-@keyframes girar {
-  from { transform: rotateY(0deg); }
-  to { transform: rotateY(360deg); }
+/* Órbitas con diferentes radios y velocidades */
+.orbita1 { animation: orbitar 25s linear infinite; }
+.orbita2 { animation: orbitar 32s linear infinite; }
+.orbita3 { animation: orbitar 38s linear infinite; }
+.orbita4 { animation: orbitar 42s linear infinite; }
+.orbita5 { animation: orbitar 48s linear infinite; }
+@keyframes orbitar {
+  from { transform: rotate(0deg) translateX(160px) rotate(0deg); }
+  to   { transform: rotate(360deg) translateX(160px) rotate(-360deg); }
 }
-
-/* Movimientos diferentes para cada foto */
-.f1 { animation: mover1 25s linear infinite; }
-.f2 { animation: mover2 29s linear infinite; }
-.f3 { animation: mover3 32s linear infinite; }
-.f4 { animation: mover4 27s linear infinite; }
-.f5 { animation: mover5 30s linear infinite; }
-
-/* Rutas distintas, nunca se salen de la pantalla */
-@keyframes mover1 {
-  0%   { top: 10%; left: 10%; }
-  25%  { top: 20%; left: 80%; }
-  50%  { top: 75%; left: 70%; }
-  75%  { top: 65%; left: 15%; }
-  100% { top: 10%; left: 10%; }
+.orbita2 { animation: orbitar2 32s linear infinite; }
+@keyframes orbitar2 {
+  from { transform: rotate(0deg) translateX(210px) rotate(0deg); }
+  to   { transform: rotate(360deg) translateX(210px) rotate(-360deg); }
 }
-
-@keyframes mover2 {
-  0%   { top: 30%; left: 85%; }
-  25%  { top: 80%; left: 75%; }
-  50%  { top: 60%; left: 10%; }
-  75%  { top: 15%; left: 20%; }
-  100% { top: 30%; left: 85%; }
+.orbita3 { animation: orbitar3 38s linear infinite; }
+@keyframes orbitar3 {
+  from { transform: rotate(0deg) translateX(260px) rotate(0deg); }
+  to   { transform: rotate(360deg) translateX(260px) rotate(-360deg); }
 }
-
-@keyframes mover3 {
-  0%   { top: 70%; left: 20%; }
-  25%  { top: 10%; left: 75%; }
-  50%  { top: 25%; left: 15%; }
-  75%  { top: 80%; left: 80%; }
-  100% { top: 70%; left: 20%; }
+.orbita4 { animation: orbitar4 42s linear infinite; }
+@keyframes orbitar4 {
+  from { transform: rotate(45deg) translateX(180px) rotate(-45deg); }
+  to   { transform: rotate(405deg) translateX(180px) rotate(-405deg); }
 }
-
-@keyframes mover4 {
-  0%   { top: 50%; left: 85%; }
-  25%  { top: 75%; left: 10%; }
-  50%  { top: 15%; left: 70%; }
-  75%  { top: 85%; left: 60%; }
-  100% { top: 50%; left: 85%; }
+.orbita5 { animation: orbitar5 48s linear infinite; }
+@keyframes orbitar5 {
+  from { transform: rotate(90deg) translateX(230px) rotate(-90deg); }
+  to   { transform: rotate(450deg) translateX(230px) rotate(-450deg); }
 }
-
-@keyframes mover5 {
-  0%   { top: 85%; left: 50%; }
-  25%  { top: 15%; left: 25%; }
-  50%  { top: 40%; left: 80%; }
-  75%  { top: 70%; left: 30%; }
-  100% { top: 85%; left: 50%; }
-}
-
 .heart {
   position: absolute;
-  color: #ff99cc;
-  font-size: 16px;
+  color: #ff6688;
+  font-size: 18px;
   z-index: 5;
-  animation: flotar 6s linear forwards;
+  animation: flotar 7s linear forwards;
 }
-
 @keyframes flotar {
-  from { transform: translateY(100vh) scale(0.8); opacity: 1; }
-  to { transform: translateY(-20vh) scale(1.1); opacity: 0; }
+  from { transform: translateY(100vh) scale(0.7); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  to   { transform: translateY(-20vh) scale(1.2); opacity: 0; }
 }
-
-.text {
+.frase {
   position: absolute;
   color: #ffffff;
-  font-size: 13px;
-  font-weight: 500;
-  opacity: 0.9;
-  z-index: 5;
-  animation: flotar 10s linear forwards;
-  text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+  font-size: 14px;
+  font-weight: bold;
+  text-shadow: 0 0 8px #ff2244, 0 0 15px #ff2244;
+  z-index: 8;
+  animation: subir 11s linear forwards;
+}
+@keyframes subir {
+  from { transform: translateY(100vh); opacity: 0; }
+  15%  { opacity: 1; }
+  85%  { opacity: 1; }
+  to   { transform: translateY(-25vh); opacity: 0; }
 }
 </style>
 </head>
-
 <body>
 
-<canvas id="c"></canvas>
+<canvas id="lienzo"></canvas>
 
-<!-- Cada foto por separado con su propio movimiento -->
-<div class="photo f1"><img src="san 3.jpeg" alt="Foto 3"></div>
-<div class="photo f2"><img src="san1.jpeg" alt="Foto 1"></div>
-<div class="photo f3"><img src="san 2.jpeg" alt="Foto 2"></div>
-<div class="photo f4"><img src="sam 5.jpeg" alt="Foto 5"></div>
-<div class="photo f5"><img src="san6.jpeg" alt="Foto 6"></div>
+<!-- Fotos girando en órbita -->
+<div class="foto orbita1"><img src="san 3.jpeg" alt="Foto 3"></div>
+<div class="foto orbita2"><img src="san1.jpeg" alt="Foto 1"></div>
+<div class="foto orbita3"><img src="san 2.jpeg" alt="Foto 2"></div>
+<div class="foto orbita4"><img src="sam 5.jpeg" alt="Foto 5"></div>
+<div class="foto orbita5"><img src="san6.jpeg" alt="Foto 6"></div>
 
 <script>
-const canvas = document.getElementById("c");
-const ctx = canvas.getContext("2d");
+const lienzo = document.getElementById("lienzo");
+const ctx = lienzo.getContext("2d");
+let ancho = window.innerWidth;
+let alto = window.innerHeight;
 
 function ajustarLienzo() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+  ancho = window.innerWidth;
+  alto = window.innerHeight;
+  lienzo.width = ancho;
+  lienzo.height = alto;
+  crearTextoEstrellas();
 }
 ajustarLienzo();
 window.addEventListener("resize", ajustarLienzo);
 
-/* ⭐ Estrellas de fondo */
+// Estrellas de fondo
 let estrellasFondo = [];
-for (let i = 0; i < 600; i++) {
+for (let i = 0; i < 800; i++) {
   estrellasFondo.push({
-    x: Math.random() * canvas.width,
-    y: Math.random() * canvas.height,
-    tam: Math.random() * 1.1
+    x: Math.random() * ancho,
+    y: Math.random() * alto,
+    tam: Math.random() * 1.2,
+    velocidad: Math.random() * 0.15 + 0.05
   });
 }
 
-/* ✨ TEXTO: TE AMO arriba / SANDRA abajo, formado de estrellas rojas claras */
+// Texto "TE AMO / SANDRA" formado por estrellas rojas
 let estrellasTexto = [];
 function crearTextoEstrellas() {
   estrellasTexto = [];
-  const tamLetra = 80;
-  const separacion = tamLetra * 1.4;
-  const centroX = canvas.width / 2;
-  const centroY = canvas.height / 2;
+  const tamLetra = 75;
+  const separacion = tamLetra * 1.3;
+  const centroX = ancho / 2;
+  const centroY = alto / 2;
 
   // Línea 1: TE AMO
-  const lienzo1 = document.createElement("canvas");
-  const ctx1 = lienzo1.getContext("2d");
-  lienzo1.width = tamLetra * 3.5;
-  lienzo1.height = tamLetra;
-  ctx1.fillStyle = "#fff";
-  ctx1.font = "bold " + tamLetra + "px Arial";
-  ctx1.textAlign = "center";
-  ctx1.textBaseline = "middle";
-  ctx1.fillText("TE AMO", lienzo1.width / 2, lienzo1.height / 2);
-  const datos1 = ctx1.getImageData(0, 0, lienzo1.width, lienzo1.height).data;
+  const lienzoTemp1 = document.createElement("canvas");
+  const ctxTemp1 = lienzoTemp1.getContext("2d");
+  lienzoTemp1.width = tamLetra * 3.4;
+  lienzoTemp1.height = tamLetra;
+  ctxTemp1.fillStyle = "#fff";
+  ctxTemp1.font = "bold " + tamLetra + "px Arial, sans-serif";
+  ctxTemp1.textAlign = "center";
+  ctxTemp1.textBaseline = "middle";
+  ctxTemp1.fillText("TE AMO", lienzoTemp1.width / 2, lienzoTemp1.height / 2);
+  const datos1 = ctxTemp1.getImageData(0, 0, lienzoTemp1.width, lienzoTemp1.height).data;
 
-  for (let y = 0; y < lienzo1.height; y += 2) {
-    for (let x = 0; x < lienzo1.width; x += 2) {
-      const pos = (y * lienzo1.width + x) * 4;
-      if (datos1[pos + 3] > 150) {
+  for (let y = 0; y < lienzoTemp1.height; y += 2) {
+    for (let x = 0; x < lienzoTemp1.width; x += 2) {
+      const pos = (y * lienzoTemp1.width + x) * 4;
+      if (datos1[pos + 3] > 140) {
         estrellasTexto.push({
-          x: centroX - (lienzo1.width / 2) + x,
+          x: centroX - (lienzoTemp1.width / 2) + x,
           y: centroY - separacion / 2 + y,
-          tam: 0.6
+          tam: 0.65
         });
       }
     }
   }
 
   // Línea 2: SANDRA
-  const lienzo2 = document.createElement("canvas");
-  const ctx2 = lienzo2.getContext("2d");
-  lienzo2.width = tamLetra * 4.2;
-  lienzo2.height = tamLetra;
-  ctx2.fillStyle = "#fff";
-  ctx2.font = "bold " + tamLetra + "px Arial";
-  ctx2.textAlign = "center";
-  ctx2.textBaseline = "middle";
-  ctx2.fillText("SANDRA", lienzo2.width / 2, lienzo2.height / 2);
-  const datos2 = ctx2.getImageData(0, 0, lienzo2.width, lienzo2.height).data;
+  const lienzoTemp2 = document.createElement("canvas");
+  const ctxTemp2 = lienzoTemp2.getContext("2d");
+  lienzoTemp2.width = tamLetra * 4;
+  lienzoTemp2.height = tamLetra;
+  ctxTemp2.fillStyle = "#fff";
+  ctxTemp2.font = "bold " + tamLetra + "px Arial, sans-serif";
+  ctxTemp2.textAlign = "center";
+  ctxTemp2.textBaseline = "middle";
+  ctxTemp2.fillText("SANDRA", lienzoTemp2.width / 2, lienzoTemp2.height / 2);
+  const datos2 = ctxTemp2.getImageData(0, 0, lienzoTemp2.width, lienzoTemp2.height).data;
 
-  for (let y = 0; y < lienzo2.height; y += 2) {
-    for (let x = 0; x < lienzo2.width; x += 2) {
-      const pos = (y * lienzo2.width + x) * 4;
-      if (datos2[pos + 3] > 150) {
+  for (let y = 0; y < lienzoTemp2.height; y += 2) {
+    for (let x = 0; x < lienzoTemp2.width; x += 2) {
+      const pos = (y * lienzoTemp2.width + x) * 4;
+      if (datos2[pos + 3] > 140) {
         estrellasTexto.push({
-          x: centroX - (lienzo2.width / 2) + x,
+          x: centroX - (lienzoTemp2.width / 2) + x,
           y: centroY + separacion / 2 + y,
-          tam: 0.6
+          tam: 0.65
         });
       }
     }
   }
 }
 crearTextoEstrellas();
-window.addEventListener("resize", crearTextoEstrellas);
 
-/* 🎨 Animación general */
+// Animación principal
 function animar() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.clearRect(0, 0, ancho, alto);
 
-  // Dibujar estrellas de fondo
+  // Estrellas de fondo
   ctx.fillStyle = "#ffffff";
   for (let e of estrellasFondo) {
     ctx.beginPath();
     ctx.arc(e.x, e.y, e.tam, 0, Math.PI * 2);
     ctx.fill();
-    e.y += 0.22;
-    if (e.y > canvas.height) e.y = 0;
+    e.y += e.velocidad;
+    if (e.y > alto) e.y = 0;
   }
 
-  // Dibujar texto con estrellas rojas
-  ctx.fillStyle = "#ff2233";
+  // Texto en estrellas rojas
+  ctx.fillStyle = "#ff2244";
   for (let et of estrellasTexto) {
     ctx.beginPath();
     ctx.arc(et.x, et.y, et.tam, 0, Math.PI * 2);
@@ -240,34 +224,33 @@ function animar() {
 }
 animar();
 
-/* 💖 Corazones flotando */
+// Corazones flotando
 setInterval(() => {
   const corazon = document.createElement("div");
   corazon.className = "heart";
   corazon.textContent = "❤";
-  corazon.style.left = Math.random() * window.innerWidth + "px";
+  corazon.style.left = Math.random() * ancho + "px";
   document.body.appendChild(corazon);
-  setTimeout(() => corazon.remove(), 6000);
-}, 400);
+  setTimeout(() => corazon.remove(), 7000);
+}, 500);
 
-/* ✨ Frases */
+// Frases románticas
 const frases = [
   "TE AMO SANDRA 💖",
   "Eres mi universo ✨",
   "Mi corazón es tuyo ❤️",
-  "Siempre contigo 💕",
-  "Iluminas mi vida ⭐"
+  "Amor de mi vida 💕",
+  "Siempre contigo ⭐",
+  "Iluminas mi camino 💞"
 ];
-
 setInterval(() => {
   const texto = document.createElement("div");
-  texto.className = "text";
+  texto.className = "frase";
   texto.textContent = frases[Math.floor(Math.random() * frases.length)];
-  texto.style.left = Math.random() * (window.innerWidth - 150) + "px";
+  texto.style.left = Math.random() * (ancho - 160) + "px";
   document.body.appendChild(texto);
-  setTimeout(() => texto.remove(), 10000);
-}, 2500);
-
+  setTimeout(() => texto.remove(), 11000);
+}, 3000);
 </script>
 
 </body>
