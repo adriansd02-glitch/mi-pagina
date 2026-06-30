@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Para ti ❤️</title>
+<title>Para ti ❤️ Sandra</title>
 <style>
 * {
   margin: 0;
@@ -12,16 +12,14 @@
 }
 
 body {
-  background-color: #000000;
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  position: relative;
   font-family: Arial, sans-serif;
 }
 
 /* ======================================
-   🎬 PANTALLA DE INICIO / PORTADA
+   🎬 PANTALLA DE INICIO DECORADA
 ====================================== */
 .pantalla-inicio {
   position: fixed;
@@ -39,13 +37,10 @@ body {
   overflow: hidden;
 }
 
-/* Estrellas en la portada */
 .estrellas-portada {
   position: absolute;
   width: 100%;
   height: 100%;
-  top: 0;
-  left: 0;
 }
 
 .estrella {
@@ -60,7 +55,6 @@ body {
   50% { opacity: 1; }
 }
 
-/* Corazones flotando en la portada */
 .corazon-deco {
   position: absolute;
   color: #ff4466;
@@ -76,69 +70,49 @@ body {
   100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
 }
 
-/* Texto de portada */
 .pantalla-inicio h1 {
-  color: #ff2244;
+  color: #ffaa33;
   font-size: 46px;
-  text-shadow: 0 0 15px #ff2244, 0 0 30px #ff6688, 0 0 45px #ff99aa;
+  text-shadow: 0 0 15px #ffaa33, 0 0 30px #ffdd66;
   margin-bottom: 25px;
-  animation: brillarTexto 4s ease-in-out infinite alternate;
+  animation: brillar 4s ease-in-out infinite alternate;
   z-index: 10;
 }
 
 .pantalla-inicio p {
-  color: #ffdde6;
+  color: #ffddaa;
   font-size: 20px;
   margin-bottom: 50px;
-  text-shadow: 0 0 8px #ff4466;
+  text-shadow: 0 0 8px #ffaa33;
   z-index: 10;
 }
 
-@keyframes brillarTexto {
+@keyframes brillar {
   from { filter: brightness(1); }
   to { filter: brightness(1.5); }
 }
 
-/* Botón de iniciar decorado */
 .boton-iniciar {
   padding: 18px 45px;
   font-size: 24px;
   font-weight: bold;
   color: #ffffff;
-  background: linear-gradient(45deg, #ff2244, #ff6699);
+  background: linear-gradient(45deg, #ff8822, #ffcc33);
   border: none;
   border-radius: 60px;
-  box-shadow: 0 0 20px #ff2244, 0 0 40px rgba(255, 34, 68, 0.6), inset 0 0 10px rgba(255,255,255,0.3);
+  box-shadow: 0 0 20px #ff8822, 0 0 40px rgba(255, 136, 34, 0.6);
   cursor: pointer;
   transition: all 0.3s ease;
   z-index: 10;
-  position: relative;
-  overflow: hidden;
-}
-
-.boton-iniciar::before {
-  content: "";
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
-  animation: brilloBoton 5s linear infinite;
-}
-
-@keyframes brilloBoton {
-  0% { transform: translate(-100%, -100%) rotate(0deg); }
-  100% { transform: translate(100%, 100%) rotate(360deg); }
 }
 
 .boton-iniciar:hover {
   transform: scale(1.1);
-  box-shadow: 0 0 25px #ff2244, 0 0 50px rgba(255, 34, 68, 0.8);
+  box-shadow: 0 0 25px #ff8822, 0 0 50px rgba(255, 136, 34, 0.8);
 }
 
 /* ======================================
-   ✨ CONTENIDO PRINCIPAL
+   ✨ PANTALLA PRINCIPAL - IGUAL A LA IMAGEN
 ====================================== */
 .contenido-principal {
   width: 100%;
@@ -147,14 +121,51 @@ body {
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.8s ease;
+  background: #000;
 }
 
-.estrellas {
+/* Fondo de galaxia */
+.fondo-galaxia {
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(ellipse at center,
+    #1a0033 0%,
+    #220044 20%,
+    #000022 40%,
+    #000000 70%);
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+}
+
+/* Nebulosa de colores */
+.nebulosa {
   position: absolute;
   width: 100%;
   height: 100%;
+  background: radial-gradient(circle at 30% 40%,
+    rgba(255, 80, 30, 0.3) 0%,
+    rgba(255, 120, 50, 0.15) 20%,
+    rgba(80, 120, 255, 0.12) 40%,
+    rgba(20, 200, 255, 0.08) 60%,
+    transparent 80%),
+  radial-gradient(circle at 70% 60%,
+    rgba(255, 100, 40, 0.25) 0%,
+    rgba(255, 150, 60, 0.12) 25%,
+    rgba(255, 60, 180, 0.1) 50%,
+    transparent 75%);
+  filter: blur(15px);
 }
 
+/* Estrellas brillantes */
+.estrella-fondo {
+  position: absolute;
+  border-radius: 50%;
+  background: #ffffff;
+}
+
+/* Texto principal */
 .texto-centro {
   position: absolute;
   top: 50%;
@@ -165,28 +176,52 @@ body {
 }
 
 .te-amo {
-  font-size: 48px;
+  font-size: 52px;
   font-weight: bold;
-  color: #ff2244;
-  text-shadow: 0 0 15px #ff2244, 0 0 30px #ff6688;
-  margin-bottom: 10px;
+  color: #ffaa33;
+  text-shadow:
+    0 0 8px #ffaa33,
+    0 0 16px #ffaa33,
+    0 0 28px #ff8822,
+    0 0 40px #ff6600;
+  margin-bottom: 8px;
+  animation: parpadearTexto 4s ease-in-out infinite alternate;
 }
 
 .sandra {
-  font-size: 56px;
+  font-size: 60px;
   font-weight: bold;
-  color: #ff2244;
-  text-shadow: 0 0 15px #ff2244, 0 0 30px #ff6688;
+  color: #ffaa33;
+  text-shadow:
+    0 0 8px #ffaa33,
+    0 0 16px #ffaa33,
+    0 0 28px #ff8822,
+    0 0 40px #ff6600;
+  animation: parpadearTexto 4s ease-in-out infinite alternate;
 }
 
-/* Fotos */
+@keyframes parpadearTexto {
+  from { filter: brightness(1); }
+  to { filter: brightness(1.4); }
+}
+
+/* Frase pequeña como en la imagen */
+.frase-arriba {
+  font-size: 14px;
+  color: #ffddaa;
+  margin-bottom: 15px;
+  text-shadow: 0 0 5px #ff8822;
+  opacity: 0.9;
+}
+
+/* Fotos moviéndose */
 .foto {
   position: absolute;
   width: 42px;
   height: 42px;
   border-radius: 50%;
   overflow: hidden;
-  box-shadow: 0 0 10px #ff3355, 0 0 20px rgba(255,255,255,0.4);
+  box-shadow: 0 0 12px #ffaa33, 0 0 24px rgba(255,170,51,0.5);
   z-index: 10;
 }
 
@@ -197,12 +232,12 @@ body {
   display: block;
 }
 
-/* Frases pequeñas */
+/* Frases que suben */
 .frase {
   position: absolute;
   color: #ffffff;
   font-size: 12px;
-  text-shadow: 0 0 5px #ff2244;
+  text-shadow: 0 0 5px #ffaa33;
   animation: subir 8s linear forwards;
   z-index: 5;
 }
@@ -217,20 +252,23 @@ body {
 </head>
 <body>
 
-<!-- 🎬 PANTALLA DE INICIO DECORADA -->
+<!-- 🎬 PANTALLA DE INICIO -->
 <div class="pantalla-inicio" id="pantallaInicio">
   <div class="estrellas-portada" id="estrellasPortada"></div>
-
   <h1>Para ti ❤️</h1>
-  <p>Un detalle con mucho amor</p>
+  <p>Un universo lleno de amor</p>
   <button class="boton-iniciar" id="botonIniciar">INICIAR</button>
 </div>
 
 <!-- ✨ PANTALLA PRINCIPAL -->
 <div class="contenido-principal" id="contenidoPrincipal">
-  <div class="estrellas" id="fondo"></div>
+  <div class="fondo-galaxia">
+    <div class="nebulosa"></div>
+    <div id="estrellasGalaxia"></div>
+  </div>
 
   <div class="texto-centro">
+    <div class="frase-arriba">Contigo todo es mejor</div>
     <div class="te-amo">TE AMO</div>
     <div class="sandra">SANDRA</div>
   </div>
@@ -243,8 +281,7 @@ body {
 </div>
 
 <script>
-// 🎨 DECORACIÓN DE LA PORTADA
-// Crear estrellas en portada
+// 🎨 DECORACIÓN PORTADA
 const contenedorEstrellas = document.getElementById("estrellasPortada");
 for (let i = 0; i < 500; i++) {
   const estrella = document.createElement("div");
@@ -258,7 +295,6 @@ for (let i = 0; i < 500; i++) {
   contenedorEstrellas.appendChild(estrella);
 }
 
-// Crear corazones flotantes en portada
 setInterval(() => {
   const corazon = document.createElement("div");
   corazon.classList.add("corazon-deco");
@@ -281,26 +317,27 @@ botonIniciar.addEventListener("click", () => {
     pantallaInicio.style.visibility = "hidden";
     contenidoPrincipal.style.opacity = "1";
     contenidoPrincipal.style.visibility = "visible";
-    iniciarAnimaciones();
+    iniciarTodo();
   }, 800);
 });
 
-// ✨ ANIMACIONES DE LA PANTALLA PRINCIPAL
-function iniciarAnimaciones() {
-  // Estrellas del fondo
-  const fondo = document.getElementById("fondo");
-  for (let i = 0; i < 800; i++) {
+// ✨ ANIMACIONES PRINCIPALES
+function iniciarTodo() {
+  // Crear estrellas de galaxia
+  const contenedorGalaxia = document.getElementById("estrellasGalaxia");
+  for (let i = 0; i < 1200; i++) {
     const estrella = document.createElement("div");
-    estrella.style.position = "absolute";
-    const tamaño = Math.random() * 2 + 0.5;
+    estrella.classList.add("estrella-fondo");
+    const tamaño = Math.random() * 2.5 + 0.3;
     estrella.style.width = tamaño + "px";
     estrella.style.height = tamaño + "px";
-    estrella.style.background = "#ffffff";
-    estrella.style.borderRadius = "50%";
     estrella.style.left = Math.random() * 100 + "%";
     estrella.style.top = Math.random() * 100 + "%";
-    estrella.style.opacity = Math.random();
-    fondo.appendChild(estrella);
+    estrella.style.opacity = Math.random() * 0.9 + 0.1;
+    if (tamaño > 1.8) {
+      estrella.style.boxShadow = `0 0 ${tamaño*3}px #fff`;
+    }
+    contenedorGalaxia.appendChild(estrella);
   }
 
   // Mover fotos
@@ -328,13 +365,13 @@ function iniciarAnimaciones() {
   // Frases románticas
   const textos = [
     "Te amo con todo mi corazón",
-    "Eres mi persona favorita",
-    "Iluminas mi mundo",
-    "Siempre en mi mente",
-    "Mi felicidad eres tú",
-    "Amor de mi vida",
+    "Eres mi universo",
     "Contigo todo es mejor",
-    "Eres mi sueño hecho realidad"
+    "Mi vida eres tú",
+    "Eres mi sueño hecho realidad",
+    "Iluminas mi camino",
+    "Para siempre contigo",
+    "Lo mejor que me pasó"
   ];
 
   setInterval(() => {
