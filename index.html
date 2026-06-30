@@ -109,7 +109,7 @@ function resizeCanvas() {
 resizeCanvas();
 window.addEventListener("resize", resizeCanvas);
 
-/* ⭐ ESTRELLAS NORMALES */
+/* ⭐ ESTRELLAS NORMALES DEL FONDO */
 let stars = [];
 for (let i = 0; i < 750; i++) {
   stars.push({
@@ -119,13 +119,13 @@ for (let i = 0; i < 750; i++) {
   });
 }
 
-/* ✨ ESTRELLAS QUE FORMAN EL TEXTO */
+/* ✨ ESTRELLAS ROJAS QUE FORMAN EL TEXTO */
 let textStars = [];
 function createTextStars() {
   textStars = [];
   const tempCanvas = document.createElement("canvas");
   const tempCtx = tempCanvas.getContext("2d");
-  const size = 220;
+  const size = 160; // Tamaño reducido del texto
   tempCanvas.width = size * 4;
   tempCanvas.height = size;
 
@@ -159,9 +159,9 @@ window.addEventListener("resize", createTextStars);
 /* DIBUJAR TODO */
 function drawStars() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = "white";
 
-  // Dibujar estrellas del fondo
+  // Dibujar estrellas blancas del fondo
+  ctx.fillStyle = "white";
   for (let s of stars) {
     ctx.beginPath();
     ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
@@ -170,7 +170,8 @@ function drawStars() {
     if (s.y > canvas.height) s.y = 0;
   }
 
-  // Dibujar estrellas que forman el texto
+  // Dibujar estrellas ROJAS del texto
+  ctx.fillStyle = "#ff3355"; // Color rojo para el título
   for (let ts of textStars) {
     ctx.beginPath();
     ctx.arc(ts.x, ts.y, ts.r, 0, Math.PI * 2);
